@@ -1,0 +1,256 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+
+  <title>Polyphase Resampling</title>
+
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>c4e55d42-60e5-4929-b070-d873dff5fd7b</md:uuid>
+</metadata>
+
+
+
+  <content>
+
+    <section id="sec1">
+      <title>Polyphase Resampling with a Rational Factor</title>
+
+      <para id="para1.1">
+Recall that resampling by rational rate <m:math><m:apply><m:divide/>
+<m:ci>L</m:ci><m:ci>M</m:ci></m:apply></m:math> can be accomplished 
+through the following three-stage process(see <link target-id="fig1" strength="3"/>).
+      </para>
+
+      <figure id="fig1">
+	<media id="idm865056" alt=""><image src="../../media/m10443fig1.png" mime-type="image/png"/></media>
+      </figure>
+
+      <para id="para1.2">
+If we implemented the upsampler/LPF pair with a polyphase filterbank, we 
+would still waste computations due to eventual downsampling by <m:math><m:ci>
+M</m:ci></m:math>. Alternatively, if we implemented the LPF/downsampler pair 
+with a polyphase filterbank, we would waste computations by feeding it the 
+(mostly-zeros) upsampler output. Thus, we need to examine this problem in 
+more detail.
+      </para>
+
+      <para id="para1.3">
+Assume for the moment that we implemented the upsampler/LPF pair with a 
+polyphase filterbank, giving the architecture in <link target-id="fig2" strength="3"/>.
+      </para>
+
+      <figure id="fig2">
+	<media id="idm1524288" alt=""><image src="../../media/m10443fig2.png" mime-type="image/png"/></media>
+      </figure>
+
+      <para id="para1.4">
+Keeping the "parallel-to-serial" interpretation of the upsampler/delay 
+ladder in mind, the input sequence to the decimator <m:math><m:apply>
+<m:ci type="fn" class="discrete">q</m:ci><m:ci>l</m:ci></m:apply></m:math> 
+has the form as in <link target-id="fig2.5" strength="3"/>
+
+</para>
+
+      <figure id="fig2.5">
+	<media id="idm1479632" alt=""><image src="../../media/m10443fig2andahalf.png" mime-type="image/png"/></media>
+      </figure>
+
+<para id="para1.45">
+
+leading to the observation that
+
+
+<m:math display="block">
+  <m:apply>
+  <m:eq/>
+    <m:apply>
+      <m:ci type="fn" class="discrete">q</m:ci>
+      <m:ci>l</m:ci>
+    </m:apply>
+    <m:apply>
+        <m:ci type="fn" class="discrete">
+        <m:msub>
+          <m:mi>v</m:mi>
+<m:mrow>
+    <m:msub>
+      <m:mfenced open="〈" close="〉">
+      <m:mi>l</m:mi>
+      </m:mfenced>
+      <m:mi>L</m:mi>
+    </m:msub>
+  </m:mrow>
+        </m:msub> 
+       </m:ci>
+      <m:apply>
+      <m:floor/>
+        <m:apply>
+        <m:divide/>
+          <m:ci>l</m:ci>
+          <m:ci>L</m:ci>
+        </m:apply>
+      </m:apply>
+    </m:apply>
+  </m:apply>
+</m:math>
+
+<equation id="equ1">
+<m:math>
+  <m:apply>
+  <m:eq/>
+    <m:apply>
+      <m:ci type="fn" class="discrete">y</m:ci>
+      <m:ci>m</m:ci>
+    </m:apply>
+
+    <m:apply>
+      <m:ci type="fn" class="discrete">q</m:ci>
+      <m:apply>
+      <m:times/>
+        <m:ci>m</m:ci>
+        <m:ci>M</m:ci>
+      </m:apply>
+    </m:apply>
+
+    <m:apply>
+        <m:ci type="fn" class="discrete">
+        <m:msub>
+          <m:mi>v</m:mi>
+  <m:mrow>
+    <m:msub>
+      <m:mfenced open="〈" close="〉">
+        <m:apply>
+        <m:times/>
+          <m:mi>m</m:mi>
+          <m:mi>M</m:mi>
+        </m:apply>
+      </m:mfenced>
+      <m:mi>L</m:mi>
+    </m:msub>
+  </m:mrow>
+        </m:msub> 
+       </m:ci>
+      <m:apply>
+      <m:floor/>
+        <m:apply>
+        <m:divide/>
+          <m:apply>
+          <m:times/>
+            <m:ci>m</m:ci>
+            <m:ci>M</m:ci>
+          </m:apply>
+          <m:ci>L</m:ci>
+        </m:apply>
+      </m:apply>
+    </m:apply>
+
+   <m:apply>
+   <m:sum/>
+    <m:bvar><m:ci>k</m:ci></m:bvar>
+    <m:condition><m:ci>k</m:ci></m:condition>
+    <m:apply>
+    <m:times/>
+        <m:apply>
+        <m:ci type="fn" class="discrete">
+        <m:msub>
+          <m:mi>h</m:mi>
+  <m:mrow>
+    <m:msub>
+      <m:mfenced open="〈" close="〉">
+        <m:apply>
+        <m:times/>
+          <m:mi>m</m:mi>
+          <m:mi>M</m:mi>
+        </m:apply>
+      </m:mfenced>
+      <m:mi>L</m:mi>
+    </m:msub>
+  </m:mrow>
+        </m:msub> 
+       </m:ci>
+       <m:ci>k</m:ci>
+      </m:apply>
+      <m:apply>
+      <m:ci type="fn" class="discrete">x</m:ci>
+        <m:apply>
+        <m:minus/>
+          <m:apply>
+          <m:floor/>
+            <m:apply>
+            <m:divide/>
+              <m:apply>
+              <m:times/>
+                <m:ci>m</m:ci>
+                <m:ci>M</m:ci>
+              </m:apply>
+              <m:ci>L</m:ci>
+            </m:apply>
+          </m:apply>
+          <m:ci>k</m:ci>
+        </m:apply>
+      </m:apply>
+    </m:apply>
+  </m:apply>
+  </m:apply>
+</m:math>
+</equation>
+
+      </para>
+
+<para id="para1.5">
+Thus, to calculate the resampled output at output index <m:math><m:ci>m</m:ci></m:math>, 
+we should calculate only the output of branch number
+<m:math>
+<m:apply>
+<m:rem/>
+<m:apply>
+<m:times/>
+<m:ci>m</m:ci>
+<m:ci>M</m:ci>
+</m:apply>
+<m:ci>L</m:ci>
+</m:apply>
+</m:math>
+<!--<m:math>
+  <m:ci>
+    <m:msub>
+      <m:mfenced open='&lang;' close='&rang;'>
+        <m:apply>
+        <m:times/>
+          <m:mi>m</m:mi>
+          <m:mi>M</m:mi>
+        </m:apply>
+      </m:mfenced>
+      <m:mi>L</m:mi>
+    </m:msub>
+  </m:ci>
+</m:math>-->
+
+at input index <m:math><m:apply><m:floor/><m:apply><m:divide/><m:apply><m:times/><m:ci>m</m:ci>
+<m:ci>M</m:ci></m:apply><m:ci>L</m:ci></m:apply></m:apply></m:math>. No other branch outputs are 
+calculated, so that no computations are wasted. The resulting structure is depicted in <link target-id="fig1.5" strength="3"/>.
+</para>
+
+      <figure id="fig1.5">
+	<media id="idm13384160" alt=""><image src="../../media/m10443fig3.png" mime-type="image/png"/></media>
+	
+      </figure>
+
+<para id="para1.6">
+
+An equally-efficient structure could be obtained if we implemented the LPF/downsampler 
+using the <m:math><m:ci>M</m:ci></m:math>-branch polyphase decimator which was fed with 
+the proper sequence of input samples. However, this structure is not as elegant: 
+rather than computing the output of <emphasis>one</emphasis> particular polyphase 
+branch per output sample, we would need to add <emphasis>all</emphasis> branch outputs, 
+but where each branch output was calculated using a particular <emphasis>subset</emphasis> 
+of polyphase taps.
+
+</para>
+
+
+    </section>
+
+
+   
+
+
+
+  </content>
+</document>

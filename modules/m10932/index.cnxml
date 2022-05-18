@@ -1,0 +1,1053 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Johnston's QMF Banks</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>408ce398-b486-47c3-9f1d-68215cadfb67</md:uuid>
+</metadata>
+
+
+  <content>
+    <para id="p1">
+      Two-channel perfect-reconstruction <link document="m10426" strength="3">QMF banks</link> are not very useful because the
+      analysis filters have poor frequency selectivity.  The
+      selectivity characteristics can be improved, however, if we
+      allow the system response
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">T</m:ci>
+	  <m:apply>
+	    <m:exp/>
+	    <m:apply>
+	      <m:times/>
+	      <m:imaginaryi/>
+	      <m:ci>ω</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math> to have magnitude-response ripples while keeping its
+      linear phase.
+    </para>
+
+    <para id="p2">
+      Say that 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mi>H</m:mi>
+	      <m:mn>0</m:mn>
+	    </m:msub>
+	  </m:ci>
+	  <m:ci>z</m:ci>
+	</m:apply>
+      </m:math> is causal, linear-phase, and has <link document="m10059" strength="2">impulse response</link> length
+      <m:math><m:ci>N</m:ci></m:math>.  Then it is possible to write
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mi>H</m:mi>
+	      <m:mn>0</m:mn>
+	    </m:msub>
+	  </m:ci>
+	  <m:apply>
+	    <m:exp/>
+	    <m:apply>
+	      <m:times/>
+	      <m:imaginaryi/>
+	      <m:ci>ω</m:ci>
+	    </m:apply>
+	  </m:apply>	  
+	</m:apply>
+      </m:math> 
+      in terms of a real-valued zero-phase response 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mrow>
+		<m:mover accent="true">
+		  <m:mi>H</m:mi>
+		  <m:mo>~</m:mo>
+		</m:mover>
+	      </m:mrow>
+	      <m:mn>0</m:mn>
+	    </m:msub>
+	  </m:ci>
+	  <m:apply>
+	    <m:exp/>
+	    <m:apply>
+	      <m:times/>
+	      <m:imaginaryi/>
+	      <m:ci>ω</m:ci>
+	    </m:apply>
+	  </m:apply>	  
+	</m:apply>
+      </m:math>, so that 
+      
+      <equation id="eq1">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>H</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:ci>ω</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:minus/>
+		    <m:imaginaryi/>
+		  </m:apply>
+		  <m:ci>ω</m:ci>
+		  <m:apply>
+		    <m:divide/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>N</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		    <m:cn>2</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mover accent="true">
+		      <m:mi>H</m:mi>
+		      <m:mo>~</m:mo>
+		    </m:mover>
+		    <m:mn>0</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:imaginaryi/>
+		    <m:ci>ω</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+      
+      <equation id="eq2">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">T</m:ci>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:ci>ω</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:minus/>
+	      <m:apply>
+		<m:power/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	      <m:apply>
+		<m:power/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>ω</m:ci>
+			<m:pi/>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	    </m:apply>
+	    
+	    <m:apply>
+	      <m:minus/>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:imaginaryi/>
+		    </m:apply>
+		    <m:ci>ω</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>N</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mover accent="true">
+			  <m:mi>H</m:mi>
+			  <m:mo>~</m:mo>
+			</m:mover>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:exp/>
+		      <m:apply>
+			<m:times/>
+			<m:imaginaryi/>
+			<m:ci>ω</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:imaginaryi/>
+		    </m:apply>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>ω</m:ci>
+		      <m:pi/>
+		    </m:apply>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>N</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>  
+			<m:mover accent="true">
+			  <m:mi>H</m:mi>
+			  <m:mo>~</m:mo>
+			</m:mover>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:exp/>
+		      <m:apply>
+			<m:times/>
+			<m:imaginaryi/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>ω</m:ci>
+			  <m:pi/>
+			</m:apply> 
+		      </m:apply>  
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>	
+
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:exp/>
+                <m:apply>
+                  <m:times/>
+		  <m:apply>
+		    <m:minus/>
+		    <m:imaginaryi/>
+		  </m:apply>
+		  <m:ci>ω</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>N</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+                </m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:power/>		  
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mover accent="true">
+			  <m:mi>H</m:mi>
+			  <m:mo>~</m:mo>
+			</m:mover>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:exp/>
+		      <m:apply>
+			<m:times/>
+			<m:imaginaryi/>
+			<m:ci>ω</m:ci>
+		      </m:apply>
+		    </m:apply>		    
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		       <m:pi/>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>N</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:power/>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mover accent="true">
+			    <m:mi>H</m:mi>
+			    <m:mo>~</m:mo>
+			  </m:mover>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:exp/>
+			<m:apply>
+			  <m:times/>
+			  <m:imaginaryi/>
+			  <m:apply>
+			    <m:minus/>
+			    <m:ci>ω</m:ci>
+			    <m:pi/>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		    <m:cn>2</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+
+      Note that if <m:math><m:ci>N</m:ci></m:math> is odd, 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:exp/>
+	    <m:apply>
+	      <m:times/>
+	      <m:imaginaryi/>
+	      <m:ci>ω</m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>N</m:ci>
+		<m:cn>1</m:cn>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	  <m:cn>1</m:cn>
+	</m:apply>
+      </m:math>,
+
+      <equation id="eq3">
+        <m:math>
+         <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#evaluateat"/>
+	      <m:bvar>
+		<m:ci>ω</m:ci>
+	      </m:bvar>
+	      <m:lowlimit>
+		<m:apply>
+		  <m:divide/>
+		  <m:pi/>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:lowlimit>
+	      <m:apply>
+		<m:ci type="fn">T</m:ci>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:imaginaryi/>
+		    <m:ci>ω</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:cn>0</m:cn>
+	  </m:apply>
+	</m:math>
+      </equation>
+
+      A null in the system response would be very undesirable, and so
+      we restrict <m:math><m:ci>N</m:ci></m:math> to be an even
+      number.  In that case, 
+      
+      <equation id="eq4">      
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">T</m:ci>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+                  <m:imaginaryi/>
+                  <m:ci>ω</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:exp/>
+                <m:apply>
+                  <m:times/>
+		  <m:apply>
+		    <m:minus/>
+		    <m:imaginaryi/>
+		  </m:apply>
+		  <m:ci>ω</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>N</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+                </m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mover accent="true">
+			  <m:mi>H</m:mi>
+			  <m:mo>~</m:mo>
+			</m:mover>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:exp/>
+		      <m:apply>
+			<m:times/>
+			<m:imaginaryi/>
+			<m:ci>ω</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mover accent="true">
+			  <m:mi>H</m:mi>
+			  <m:mo>~</m:mo>
+			</m:mover>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:exp/>
+		      <m:apply>
+			<m:times/>
+			<m:imaginaryi/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>ω</m:ci>
+			  <m:pi/>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:exp/>
+                <m:apply>
+                  <m:times/>
+		  <m:apply>
+		    <m:minus/>
+		    <m:imaginaryi/>
+		  </m:apply>
+		  <m:ci>ω</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>N</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+                </m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:abs/>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:exp/>
+			<m:apply>
+			  <m:times/>
+			  <m:imaginaryi/>
+			  <m:ci>ω</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:abs/>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:exp/>
+			<m:apply>
+			  <m:times/>
+			  <m:imaginaryi/>
+			  <m:apply>
+			    <m:minus/>
+			    <m:ci>ω</m:ci>
+			    <m:pi/>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math> 
+      </equation>
+
+      <note type="note" id="idp2681376">
+	The system response is linear phase, but will have amplitude
+	distortion if       
+	<m:math>
+	  <m:apply>
+	    <m:plus/>
+	    <m:apply>
+	      <m:power/>
+	      <m:apply>
+		<m:abs/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	    <m:apply>
+	      <m:power/>
+	      <m:apply>
+		<m:abs/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>ω</m:ci>
+			<m:pi/>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math> 
+	is not equal to a constant.
+      </note>
+      
+      Johnston's idea was to assign a cost function that penalizes
+      deviation from perfect reconstruction as well as deviation from
+      an ideal lowpass filter with cutoff 
+      <m:math>
+	<m:msub>
+	  <m:mi>ω</m:mi>
+	  <m:mn>0</m:mn>
+	</m:msub>
+      </m:math>.  Specifically, real symmetric coefficients
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn" class="discrete">
+	    <m:msub>
+	      <m:mi>h</m:mi>
+	      <m:mn>0</m:mn>
+	    </m:msub>
+	  </m:ci>
+	  <m:ci>n</m:ci>
+	</m:apply>
+      </m:math>
+      are chosen to minimize
+      
+      <equation id="eq6">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>J</m:ci>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:times/>
+                <m:ci>λ</m:ci>
+                <m:apply>
+                  <m:int/>
+		  <m:bvar><m:ci>ω</m:ci></m:bvar>
+		  <m:lowlimit>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>ω</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		  </m:lowlimit>
+		  <m:uplimit><m:pi/></m:uplimit>
+		  <m:apply>
+		    <m:power/>
+		    <m:apply>
+		      <m:abs/>
+		      <m:apply>
+			<m:ci type="fn">
+			  <m:msub>
+			    <m:mi>H</m:mi>
+			    <m:mn>0</m:mn>
+			  </m:msub>
+			</m:ci>
+			<m:apply>
+			  <m:exp/>
+			  <m:apply>
+			    <m:times/>
+			    <m:imaginaryi/>
+			    <m:ci>ω</m:ci>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		    <m:cn>2</m:cn>
+		  </m:apply>
+                </m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+                <m:apply>
+                  <m:minus/>
+		  <m:cn>1</m:cn>
+		  <m:ci>λ</m:ci>
+                </m:apply>
+                <m:apply>
+                  <m:int/>
+		  <m:bvar><m:ci>ω</m:ci></m:bvar>
+		  <m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		  <m:uplimit><m:infinity/></m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:cn>1</m:cn>
+		      <m:apply>
+			<m:power/>
+			<m:apply>
+			  <m:abs/>
+			  <m:apply>
+			    <m:ci type="fn">
+			      <m:msub>
+				<m:mi>H</m:mi>
+				<m:mn>0</m:mn>
+			      </m:msub>
+			    </m:ci>
+			    <m:apply>
+			      <m:exp/>
+			      <m:apply>
+				<m:times/>
+				<m:imaginaryi/>
+				<m:ci>ω</m:ci>
+			      </m:apply>
+			    </m:apply>
+			  </m:apply>
+			</m:apply>
+			<m:cn>2</m:cn>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:power/>
+		      <m:apply>
+			<m:abs/>
+			<m:apply>
+			  <m:ci type="fn">
+			    <m:msub>
+			      <m:mi>H</m:mi>
+			      <m:mn>0</m:mn>
+			    </m:msub>
+			  </m:ci>
+			  <m:apply>
+			    <m:exp/>
+			    <m:apply>
+			      <m:times/>
+			      <m:imaginaryi/>
+			      <m:apply>
+				<m:minus/>
+				<m:pi/>
+				<m:ci>ω</m:ci>
+			      </m:apply>
+			    </m:apply>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		      <m:cn>2</m:cn>
+		    </m:apply>
+		  </m:apply>
+                </m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+
+      where 
+      <m:math>
+	<m:apply>
+	  <m:lt/>
+	  <m:cn>0</m:cn>
+	  <m:ci>λ</m:ci>
+	  <m:cn>1</m:cn>
+	</m:apply>
+      </m:math> balances between the two conflicting objectives.
+      Numerical optimization techniques can be used to determine the
+      coefficients, and a number of popular coefficient sets have been
+      tabulated.  (See <cite target-id="crochandrab"><cite-title>Crochiere and
+      Rabiner</cite-title></cite>, <cite target-id="johnston"><cite-title>Johnston</cite-title></cite>, and <cite target-id="ansariandliu"><cite-title>Ansari and Liu</cite-title></cite>)
+    </para>
+    
+    <example id="eg1">
+      <title>"12B" Filter</title>
+      <para id="p1_eg1">
+	As an example, consider the "12B" filter from <cite target-id="johnston"><cite-title>Johnston</cite-title></cite>:
+	
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>0</m:cn>
+	    </m:apply>
+	    <m:cn>-0.006443977</m:cn>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>11</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>1</m:cn>
+	    </m:apply>
+	    <m:cn>0.02745539</m:cn>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>10</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	    <m:cn>-0.00758164</m:cn>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>9</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>3</m:cn>
+	    </m:apply>
+	    <m:cn>-0.0913825</m:cn>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>8</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>4</m:cn>
+	    </m:apply>
+	    <m:cn>0.09808522</m:cn>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>7</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>5</m:cn>
+	    </m:apply>
+	    <m:cn>0.4807962</m:cn>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>6</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	which gives the following DTFT magnitudes (<link target-id="fig1" strength="3"/>).
+      </para>      
+      
+      <figure id="fig1">
+	<media id="idm6226960" alt=""><image src="../../media/john_qmf.png" mime-type="image/png"/></media>
+	<caption>
+	  The top plot shows the analysis filters and the bottom one
+	  shows the system response.
+	</caption>
+      </figure>
+    </example>      
+
+  </content>
+
+  <bib:file>
+    <bib:entry id="crochandrab">
+      <bib:book>
+	<bib:author>R.E.Crochiere and L.B. Rabiner</bib:author>
+	<bib:title>Multirate Digital Signal Processing</bib:title>
+	<bib:publisher>Prentice Hall</bib:publisher>
+	<bib:year>1983</bib:year>
+	<bib:address>Englewood Cliffs, NJ</bib:address>
+      </bib:book>
+    </bib:entry>
+
+    <bib:entry id="johnston">
+      <bib:inproceedings>
+	<bib:author>J.D. Johnston</bib:author>
+	<bib:title>A filter family designed for use in Quadrature mirror filterbanks</bib:title>
+	<bib:booktitle>Proc IEEE Internat. Conf. on Acoustics, Speech, and Signal Processing</bib:booktitle>
+	<bib:year>1980</bib:year>
+	<bib:pages>291-294</bib:pages>
+	<bib:month>April</bib:month>
+      </bib:inproceedings>
+    </bib:entry>
+
+    <bib:entry id="ansariandliu">
+      <bib:incollection>
+	<bib:author>R. Ansari and B. Liu</bib:author>
+	<bib:title>Multirate Signal Processing</bib:title>
+	<bib:booktitle>Handbook for Digital Signal Processing</bib:booktitle>
+	<bib:publisher>Wiley Interscience</bib:publisher>
+	<bib:year/>
+	<bib:editor>S.K. Mitra and J.F. Kaiser</bib:editor>
+	<bib:address>New York</bib:address>
+	<bib:note>chp. 14 pp. 981-1084</bib:note>
+      </bib:incollection>
+    </bib:entry>
+  </bib:file>
+
+</document>

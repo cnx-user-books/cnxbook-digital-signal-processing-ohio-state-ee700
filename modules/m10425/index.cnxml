@@ -1,0 +1,1048 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+
+  <title>Aliasing-Cancellation Conditions of Filterbanks</title>
+
+
+  <metadata>
+  <md:content-id>m10425</md:content-id><md:title>Aliasing-Cancellation Conditions of Filterbanks</md:title>
+  <md:abstract>This module will look at methods and examples of aliasing-cancellation conditions.
+</md:abstract>
+  <md:uuid>5dc68375-834d-498c-bf76-ab93470a9a8e</md:uuid>
+</metadata>
+
+
+  <content>
+    <section id="sec1">
+      <title>Introduction</title>
+      <para id="s1_p1">
+	It is possible to design combinations of analysis and
+	synthesis filters such that the aliasing from
+	downsampling/upsampling is completely cancelled.  Below we
+	derive aliasing-cancellation conditions for two-channel
+	filterbanks.  Though the results can be extended to M-channel
+	filterbanks in a rather straightforward manner, the
+	two-channel case offers a more lucid explanation of the
+	principle ideas (see <link target-id="fig1" strength="3"/>).
+      </para>
+
+      <figure id="fig1">
+	<media id="id2854632" alt=""><image src="../../media/alias_f1.png" mime-type="image/png"/></media>
+      </figure>
+    </section>
+
+
+    <section id="sec2">
+      <title>Aliasing Cancellation Conditions</title>
+      <para id="s2_p1">The aliasing cancellation conditions follow directly from the
+	input/output equations derived below.  Let 
+	<m:math>
+	  <m:apply>
+	    <m:in/>
+	    <m:ci>i</m:ci>
+	    <m:apply>
+	      <m:set>
+		<m:cn>0</m:cn>
+		<m:cn>1</m:cn>
+	      </m:set>
+	    </m:apply>
+	  </m:apply>
+	</m:math> denote the filterbank branch index.  Then 
+
+	<equation id="eq2">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>U</m:mi>
+		    <m:mi>i</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:divide/>
+		  <m:cn>1</m:cn>
+		  <m:cn>2</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar><m:ci>p</m:ci></m:bvar>
+		  <m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		  <m:uplimit><m:cn>1</m:cn></m:uplimit>
+		  <m:apply>
+		    <m:times/>
+                    <m:apply>
+                      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mi>i</m:mi>
+			</m:msub>
+		      </m:ci>
+                      <m:apply>
+                        <m:times/>
+			<m:apply> 
+			  <m:power/>
+			  <m:ci>z</m:ci>
+			  <m:apply>
+			    <m:divide/>
+			    <m:cn>1</m:cn>
+			    <m:cn>2</m:cn>
+			  </m:apply>
+			</m:apply>
+			<m:apply>
+			  <m:exp/>
+			  <m:apply>
+			    <m:times/>
+			    <m:apply>
+			      <m:minus/>
+			      <m:imaginaryi/>
+			    </m:apply>
+			    <m:pi/>
+			    <m:ci>p</m:ci>
+			  </m:apply>
+			</m:apply>
+                      </m:apply>
+                    </m:apply>
+                    <m:apply>
+                      <m:ci type="fn">X</m:ci>
+                      <m:apply>
+                        <m:times/>
+			<m:apply> 
+			  <m:power/>
+			  <m:ci>z</m:ci>
+			  <m:apply>
+			    <m:divide/>
+			    <m:cn>1</m:cn>
+			    <m:cn>2</m:cn>
+			  </m:apply>
+			</m:apply>
+			<m:apply>
+			  <m:exp/>
+			  <m:apply>
+			    <m:times/>
+			    <m:apply>
+			      <m:minus/>
+			      <m:imaginaryi/>
+			    </m:apply>
+			    <m:pi/>
+			    <m:ci>p</m:ci>
+			  </m:apply>
+			</m:apply>
+                      </m:apply>
+                    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	<equation id="eq3"><m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">Y</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>i</m:ci></m:bvar>
+		<m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		<m:uplimit><m:cn>1</m:cn></m:uplimit>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>G</m:mi>
+			<m:mi>i</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>U</m:mi>
+			<m:mi>i</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:power/>
+		      <m:ci>z</m:ci>
+		      <m:cn>2</m:cn>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar><m:ci>i</m:ci></m:bvar>
+		  <m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		  <m:uplimit><m:cn>1</m:cn></m:uplimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>G</m:mi>
+			  <m:mi>i</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		
+		<m:apply>
+		  <m:divide/>
+		  <m:cn>1</m:cn>
+		  <m:cn>2</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar><m:ci>p</m:ci></m:bvar>
+		  <m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		  <m:uplimit><m:cn>1</m:cn></m:uplimit>
+		  <m:apply>
+		    <m:times/>
+                    <m:apply>
+                      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mi>i</m:mi>
+			</m:msub>
+		      </m:ci>
+                      <m:apply>
+                        <m:times/>
+			<m:ci>z</m:ci>
+			<m:apply>
+			  <m:exp/>
+			  <m:apply>
+			    <m:times/>
+			    <m:apply>
+			      <m:minus/>
+			      <m:imaginaryi/>
+			    </m:apply>
+			    <m:pi/>
+			    <m:ci>p</m:ci>
+			  </m:apply>
+			</m:apply>
+                      </m:apply>
+                    </m:apply>
+                    <m:apply>
+                      <m:ci type="fn">X</m:ci>
+                      <m:apply>
+                        <m:times/>
+			<m:ci>z</m:ci>
+			<m:apply>
+			  <m:exp/>
+			  <m:apply>
+			    <m:times/>
+			    <m:apply>
+			      <m:minus/>
+			      <m:imaginaryi/>
+			    </m:apply>
+			    <m:pi/>
+			    <m:ci>p</m:ci>
+			  </m:apply>
+			</m:apply>
+                      </m:apply>
+                    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:divide/>
+		  <m:cn>1</m:cn>
+		  <m:cn>2</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar><m:ci>i</m:ci></m:bvar>
+		  <m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		  <m:uplimit><m:cn>1</m:cn></m:uplimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>G</m:mi>
+			  <m:mi>i</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:plus/>
+		      <m:apply>
+			<m:times/>
+			<m:apply>
+			  <m:ci type="fn">
+			    <m:msub>
+			      <m:mi>H</m:mi>
+			      <m:mi>i</m:mi>
+			    </m:msub>
+			  </m:ci>
+			  <m:ci>z</m:ci>
+			</m:apply>
+			<m:apply>
+			  <m:ci type="fn">X</m:ci>
+			  <m:ci>z</m:ci>
+			</m:apply>
+		      </m:apply>
+		      <m:apply>
+			<m:times/>
+			<m:apply>
+			  <m:ci type="fn">
+			    <m:msub>
+			      <m:mi>H</m:mi>
+			      <m:mi>i</m:mi>
+			    </m:msub>
+			  </m:ci>
+			  <m:apply>
+			    <m:minus/>
+			    <m:ci>z</m:ci>
+			  </m:apply>
+			</m:apply>
+			<m:apply>
+			  <m:ci type="fn">X</m:ci>
+			  <m:apply>
+			    <m:minus/>
+			    <m:ci>z</m:ci>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:divide/>
+		  <m:cn>1</m:cn>
+		  <m:cn>2</m:cn>
+		</m:apply>
+		<m:matrix>
+		  <m:matrixrow>
+		    <m:apply>
+		      <m:ci type="fn">X</m:ci>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn">X</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>z</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:matrixrow>
+		</m:matrix>
+		<m:matrix>
+		  <m:matrixrow>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>1</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		  </m:matrixrow>
+		  <m:matrixrow>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>z</m:ci>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>1</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>z</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:matrixrow>
+		</m:matrix>
+		<m:matrix>
+		  <m:matrixrow>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>G</m:mi>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		  </m:matrixrow>
+		  <m:matrixrow>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>G</m:mi>
+			  <m:mn>1</m:mn>
+			</m:msub>
+		      </m:ci>
+
+			<m:ci>z</m:ci>
+
+		    </m:apply>
+		  </m:matrixrow>
+		</m:matrix>
+	      </m:apply>
+
+	    </m:apply>
+	  </m:math>
+	</equation>
+  where 
+	<m:math>
+         <m:apply>
+          <m:eq/> 
+	  <m:apply>
+	    <m:ci type="fn" class="vector">H</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+          <m:matrix>
+            <m:matrixrow>
+              <m:apply>
+	        <m:ci type="fn" class="vector">
+                  <m:msub>
+                    <m:mi>H</m:mi>
+                    <m:mn>0</m:mn>
+                   </m:msub>
+                </m:ci>
+	        <m:ci>z</m:ci>
+	      </m:apply>
+              <m:apply>
+	        <m:ci type="fn" class="vector">
+                  <m:msub>
+                    <m:mi>H</m:mi>
+                    <m:mn>1</m:mn>
+                   </m:msub>
+                </m:ci>
+	        <m:ci>z</m:ci>
+	      </m:apply>
+             </m:matrixrow>
+              <m:matrixrow>
+              <m:apply>
+	        <m:ci type="fn" class="vector">
+                  <m:msub>
+                    <m:mi>H</m:mi>
+                    <m:mn>0</m:mn>
+                   </m:msub>
+                </m:ci>
+                <m:apply>
+                 <m:minus/>
+	        <m:ci>z</m:ci>
+                 </m:apply>
+	      </m:apply>
+              <m:apply>
+	        <m:ci type="fn" class="vector">
+                  <m:msub>
+                    <m:mi>H</m:mi>
+                    <m:mn>1</m:mn>
+                   </m:msub>
+                </m:ci>
+                 <m:apply>
+                 <m:minus/>
+	        <m:ci>z</m:ci>
+                </m:apply>
+	      </m:apply>
+             </m:matrixrow>
+            </m:matrix>
+           </m:apply>
+         </m:math>.
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="vector">H</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> is often called the <term>aliasing component matrix</term>.
+	For aliasing cancellation, we need to ensure that 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">X</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math> 
+	does not contribute to the output 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">Y</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>.  
+	This requires that 
+	
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:times/>
+	      <m:matrix>
+		<m:matrixrow>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:matrixrow>
+	      </m:matrix>
+	      <m:matrix>
+		<m:matrixrow>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>G</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		</m:matrixrow>
+		<m:matrixrow>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>G</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+
+		      <m:ci>z</m:ci>
+
+		  </m:apply>
+		</m:matrixrow>
+	      </m:matrix>
+	    </m:apply>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>G</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>1</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>G</m:mi>
+		      <m:mn>1</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:cn>0</m:cn>
+	  </m:apply>
+	</m:math>
+
+	which is guaranteed by
+
+	<equation id="eq4">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:divide/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>G</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>G</m:mi>
+		      <m:mn>1</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:divide/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	or by the following pair of conditions for any rational 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">C</m:ci><m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>G</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:ci type="fn">C</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>H</m:mi>
+		    <m:mn>1</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>G</m:mi>
+		  <m:mn>1</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:ci type="fn">C</m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>H</m:mi>
+		    <m:mn>0</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	
+	Under these aliasing-cancellation conditions, we get the
+	input/output relation 
+
+	<equation id="eq5">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">Y</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:divide/>
+		  <m:cn>1</m:cn>
+		  <m:cn>2</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:minus/>
+		  <m:apply>
+		    <m:times/>
+                    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+                    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>1</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>z</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:times/>
+                    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>1</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+                    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>z</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn">C</m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn">X</m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	where
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">T</m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:divide/>
+		<m:cn>1</m:cn>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn">C</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	
+	represents the system transfer function.  We say
+	that "perfect reconstruction" results when 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">y</m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">x</m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>n</m:ci>
+		<m:ci>l</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math> for some 
+	<m:math>
+	  <m:apply>
+	    <m:in/>
+	    <m:ci>l</m:ci>
+	    <m:naturalnumbers/>
+	  </m:apply>
+	</m:math>, or equivalently when 
+
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">T</m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:apply>
+		<m:power/>
+                <m:ci>z</m:ci>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>l</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>.
+
+	<note id="id4571466" type="note">
+	  The aliasing-cancellation conditions remove one degree of
+	  freedom from our filterbank design; originally, we had the
+	  choice of four transfer functions 
+	  <m:math>
+               <m:set>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>1</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>G</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>G</m:mi>
+		      <m:mn>1</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:set>
+	  </m:math>, whereas now we can choose three:
+          <m:math>
+	      <m:set>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>1</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn">C</m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:set>
+	  </m:math>.
+	</note>
+
+
+      </para>
+    </section>
+  </content>
+</document>

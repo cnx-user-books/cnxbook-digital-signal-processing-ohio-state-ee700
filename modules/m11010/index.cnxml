@@ -1,0 +1,187 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>CD to DAT Conversion</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>4e87da88-cf74-4ec3-9562-dc57f4b4cd9d</md:uuid>
+</metadata>
+
+
+  <content>
+
+    <section id="sec3">
+      <title>Example: CD to DAT rate conversion</title>
+
+      <para id="para3">
+	Digital audio signals stored on compact digital discs (CDs)
+	are sampled at 
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>44.1</m:cn>
+	    <m:ci>kHz</m:ci>
+	  </m:apply>
+	</m:math>, while those stored on digital audio tapes (DATs)
+	are sampled at 
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>48</m:cn>
+	    <m:ci>kHz</m:ci>
+	  </m:apply>
+	</m:math>. Conversion from CD to DAT requires an exchange rate of
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>Q</m:ci>
+	    <m:apply>
+	      <m:divide/>
+	      <m:cn>48000</m:cn>
+	      <m:cn>44100</m:cn>
+	    </m:apply>
+	    <m:apply>
+	      <m:divide/>
+	      <m:cn>160</m:cn>
+	      <m:cn>147</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	Assuming that the audio signal is bandlimited to 
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>20</m:cn>
+	    <m:ci>kHz</m:ci>
+	  </m:apply>
+	</m:math>, we design our master lowpass filter with transition
+	bands
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:forall/>
+	    <m:bvar><m:ci>k</m:ci></m:bvar>
+	    <m:apply>
+	      <m:interval closure="closed-open">
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:plus/>
+		    <m:apply>
+		      <m:times/>
+		      <m:cn>2</m:cn>
+		      <m:ci>k</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:divide/>
+		      <m:cn>20</m:cn>
+		      <m:cn>22.05</m:cn>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:divide/>
+		    <m:pi/>
+		    <m:cn>160</m:cn>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:minus/>
+		    <m:apply>
+		      <m:times/>
+		      <m:cn>2</m:cn>
+		      <m:apply>
+			<m:plus/>
+			<m:ci>k</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:divide/>
+		      <m:cn>20</m:cn>
+		      <m:cn>22.05</m:cn>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:divide/>
+		    <m:pi/>
+		    <m:cn>160</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:interval>
+	    </m:apply>
+	    <m:condition>
+	      <m:apply>
+		<m:in/>
+		<m:ci>k</m:ci>
+		<m:integers/>
+	      </m:apply>
+	    </m:condition>
+	  </m:apply>
+	</m:math>
+
+	Keeping the passband and stopband ripple levels below
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>-96</m:cn>
+	    <m:ci>dB</m:ci>
+	  </m:apply>
+	</m:math> requires a filter with a length
+	<m:math>
+	  <m:apply>
+	    <m:approx/>
+	    <m:ci>N</m:ci>
+	    <m:cn>10000</m:cn>
+	  </m:apply>
+	</m:math>, implying that the standard polyphase resampler will
+	require about
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:times/>
+	      <m:ci>N</m:ci>
+	      <m:ci>M</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:cn>1.5</m:cn>
+	      <m:ci>million</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	multiplication per output, or 
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>70</m:cn>
+	    <m:ci>billion</m:ci>
+	  </m:apply>
+	</m:math> multiplications per second! If the equivalent
+	polyphase implementation is used instead, we require only
+	<m:math>
+	  <m:apply>
+	    <m:approx/>
+	    <m:apply>
+	      <m:divide/>
+	      <m:ci>N</m:ci>
+	      <m:ci>L</m:ci>
+	    </m:apply>
+	    <m:cn>62</m:cn>
+	  </m:apply>
+	</m:math>
+	multiplies per output, or
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>3</m:cn>
+	    <m:ci>million</m:ci>
+	  </m:apply>
+	</m:math>
+	multiplications per second.
+      </para>
+
+    </section>
+  </content>
+  
+</document>

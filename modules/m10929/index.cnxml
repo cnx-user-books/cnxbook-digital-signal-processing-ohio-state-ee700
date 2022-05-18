@@ -1,0 +1,82 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  
+  <title>Uniform Modulated Filterbank</title>
+  
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>ea80e587-25e9-455a-b039-512725848bc6</md:uuid>
+</metadata>
+
+
+  <content>
+    <para id="p1">
+      A modulated <link document="m10423" strength="2">filterbank</link>
+      is composed of analysis branches which:
+
+      <list id="list1" list-type="enumerated">
+	<item>
+	  Modulate the input to center the desired sub-band at DC
+	</item>
+	<item>
+	  Lowpass filter the modulated signal to isolate the
+	  desired sub-band
+	</item>
+	<item>
+	  Downsample the lowpass signal
+	</item>
+      </list>
+      The synthesis branches interpolate the sub-band signals by
+      upsampling and lowpass filtering, then modulate each sub-band
+      back to its original spectral location (see <link target-id="fig1" strength="3"/>).
+    </para>
+    
+    <figure id="fig1">
+      <media id="idm6615008" alt=""><image src="../../media/uni_f1.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="p2">
+      In <m:math><m:ci>M</m:ci></m:math>-branch critically-sampled
+      uniformly-modulated filterbanks, the
+      <m:math><m:ci>k</m:ci></m:math>th branch has a modulation
+      frequency of
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci><m:mo>±</m:mo></m:ci>
+	    <m:ci><m:msub>
+	      <m:mi>ω</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub></m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:pi/>
+	      </m:apply>
+	      <m:ci>M</m:ci>
+	    </m:apply>
+	    <m:ci>k</m:ci>
+	    <m:ci>radians</m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math>, a lowpass cutoff frequency of 
+      <m:math>
+	<m:apply>
+	  <m:divide/>
+	  <m:pi/>
+	  <m:ci>M</m:ci>
+	</m:apply>
+      </m:math> radians, and a downsampling/upsampling factor of 
+      <m:math><m:ci>M</m:ci></m:math>.  
+    </para>
+
+    <para id="p3">
+      The most common way to implement this type of uniform modulated
+      filterbank is through the use of <link document="m10424" strength="3">polyphase filterbanks and DFTs</link>.
+    </para>
+
+  </content>
+</document>

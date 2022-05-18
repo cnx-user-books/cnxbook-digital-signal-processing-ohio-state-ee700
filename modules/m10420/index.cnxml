@@ -1,0 +1,808 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+
+  <title>Multi-stage Interpolation and Decimation</title>
+
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>9a43296f-18ba-4290-bb1f-832da1c25b62</md:uuid>
+</metadata>
+
+
+  <content>
+    <section id="sec1">
+      <title>Multistage Decimation</title>
+
+      <para id="para1">
+	In the single-stage interpolation structure illustrated in
+	<link target-id="fig01" strength="3"/>, the required impulse
+	response of
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>
+	can be very long for large <m:math><m:ci>L</m:ci></m:math>.
+      </para>
+
+      <figure id="fig01">
+	<media id="idm7648112" alt=""><image src="../../media/m10420fig1.png" mime-type="image/png"/></media>
+      </figure>
+
+
+      <para id="para2">
+	Consider, for example, the case where 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>L</m:ci>
+	    <m:cn>30</m:cn>
+	  </m:apply>
+	</m:math>
+	and the input signal
+	has a bandwidth of 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>ω</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:times/>
+	      <m:cn>0.9</m:cn>
+	      <m:pi/>
+	      <m:ci>radians</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>.  If we desire passband ripple 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>δ</m:mi>
+		<m:mi>p</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>0.002</m:cn>
+	  </m:apply>
+	</m:math>
+	and stopband ripple
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>δ</m:mi>
+		<m:mi>s</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>0.001</m:cn>
+	  </m:apply>
+	</m:math>, then Kaiser's formula approximates the required FIR
+	filter length to be
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:approx/>
+	    <m:apply>
+	      <m:approx/>
+	      <m:ci><m:msub><m:mi>N</m:mi><m:mi>h</m:mi></m:msub></m:ci>
+	      <m:apply>
+		<m:divide/>
+		<m:apply>
+		  <m:minus/>
+		  <m:apply>
+		    <m:times/>
+		    <m:cn>-10</m:cn>
+		    <m:apply>
+		      <m:log/>
+		      <m:logbase><m:cn>10</m:cn></m:logbase>
+		      <m:apply>
+			<m:times/>
+			<m:ci><m:msub><m:mi>δ</m:mi><m:mi>P</m:mi></m:msub></m:ci>
+			<m:ci><m:msub><m:mi>δ</m:mi><m:mi>S</m:mi></m:msub></m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>13</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2.3</m:cn>
+		  <m:apply>
+		    <m:ci><m:mo>Δ</m:mo></m:ci>
+		    <m:ci>ω</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:cn>900</m:cn>
+	  </m:apply>   
+	</m:math>
+
+	choosing 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci><m:mo>Δ</m:mo></m:ci>
+	      <m:ci>ω</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>ω</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:ci>L</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	as the width of the first transition band
+	(<foreign>i.e.</foreign>, ignoring the other transition bands
+	for this rough approximation).  Thus, a polyphase
+	implementation of this interpolation task would cost about
+	<m:math><m:cn>900</m:cn></m:math> multiplies per input sample.
+      </para>
+
+      <para id="para3">
+	Consider now the two-stage implementation illustrated in <link target-id="fig02" strength="3"/>.
+      </para>
+
+      <figure id="fig02">
+	<media id="idp958656" alt=""><image src="../../media/m10420fig2.png" mime-type="image/png"/></media>
+      </figure>
+
+      <para id="para4">
+	We claim that, when <m:math><m:ci>L</m:ci></m:math> is large
+	and
+	<m:math><m:ci><m:msub><m:mi>ω</m:mi><m:mn>0</m:mn></m:msub></m:ci></m:math>
+	is near Nyquist, the two-stage scheme can accomplish the same
+	interpolation task with less computation.
+      </para>
+
+      <para id="para5">
+	Let's revisit the interpolation objective of our previous example.
+	Assume that 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>L</m:mi>
+		<m:mn>1</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>2</m:cn>
+	  </m:apply>
+	</m:math>
+	and 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>L</m:mi>
+		<m:mn>2</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>15</m:cn>
+	  </m:apply>
+	</m:math>
+	so that 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:times/>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>L</m:mi>
+		  <m:mn>1</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>L</m:mi>
+		  <m:mn>2</m:mn>
+		</m:msub>
+	      </m:ci>
+	    </m:apply>
+	    <m:ci>L</m:ci>
+	    <m:cn>30</m:cn>
+	  </m:apply>
+	</m:math>.
+	We then desire a pair 
+	<m:math>
+	  <m:set>
+	    <m:apply>
+	      <m:ci type="fn">F</m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn">G</m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	  </m:set>
+	</m:math>
+	which results in the 
+	same performance as 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>.  As a means of choosing these filters, we employ a
+	Noble identity to reverse the order of filtering and
+	upsampling (see <link target-id="fig03" strength="3"/>).
+      </para>
+
+      <figure id="fig03">
+	<media id="idm8009184" alt=""><image src="../../media/m10420fig3.png" mime-type="image/png"/></media>
+      </figure>
+
+      <para id="para6">
+	It is now clear that the composite filter 
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:ci type="fn">G</m:ci>
+	      <m:apply>
+		<m:power/>
+		<m:ci>z</m:ci>
+		<m:cn>15</m:cn>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn">F</m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	should 
+	be designed to meet the same specifications as 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>.
+	Thus we adopt the following strategy:
+	<list id="list1" list-type="enumerated">
+	  <item>
+	    Design 
+	    <m:math>
+	      <m:apply>
+		<m:ci type="fn">G</m:ci>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>z</m:ci>
+		  <m:cn>15</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:math> to remove unwanted images, keeping in mind that 
+	    the DTFT 
+	    <m:math>
+	      <m:apply>
+		<m:ci type="fn">G</m:ci>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:imaginaryi/>
+		    <m:cn>15</m:cn>
+		    <m:ci>ω</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:math>
+	    is 
+	    <m:math>
+	      <m:apply>
+		<m:divide/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		</m:apply>
+		<m:cn>15</m:cn>
+	      </m:apply>
+	    </m:math>-periodic in 
+	    <m:math><m:ci>ω</m:ci></m:math>.
+	  </item>
+	  <item>
+	    Design 
+	    <m:math>
+	      <m:apply>
+		<m:ci type="fn">F</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	    </m:math>
+	    to remove the remaining images.
+	  </item>
+	</list>
+
+	The first and second plots in <link target-id="fig04" strength="3"/> illustrate example DTFTs for the desired signal
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">x</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math>
+	and its <m:math><m:ci>L</m:ci></m:math>-upsampled version 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">v</m:ci>
+	    <m:ci>l</m:ci>
+	  </m:apply>
+	</m:math>
+	, respectively.  Our objective for interpolation, is to remove
+	all but the shaded spectral image shown in the second plot.
+	The <link target-id="fig04" strength="3">third plot</link> shows
+	that, due to symmetry requirements
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">G</m:ci>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>z</m:ci>
+	      <m:cn>15</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	will be able to remove only one image in the frequency range 
+	<m:math>
+	  <m:interval closure="closed-open">
+	    <m:cn>0</m:cn>
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:pi/>
+	      </m:apply>
+	      <m:cn>15</m:cn>
+	    </m:apply>
+	  </m:interval>
+	</m:math>. 
+	Due to its periodicity, however, 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">G</m:ci>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>z</m:ci>
+	      <m:cn>15</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	also removes some of the other undesired images, namely those
+	centered at
+	<m:math>
+	  <m:apply>
+	    <m:plus/>
+	    <m:apply>
+	      <m:divide/>
+	      <m:pi/>
+	      <m:cn>15</m:cn>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:ci>m</m:ci>
+	      <m:apply>
+		<m:divide/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		</m:apply>
+		<m:cn>15</m:cn>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	for 
+	<m:math>
+	  <m:apply>
+	    <m:in/>
+	    <m:ci>m</m:ci>
+	    <m:integers/>
+	  </m:apply>
+	</m:math>.
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> is then used to remove the remaining undesired images, 
+	namely those centered at 
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:ci>m</m:ci>
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:pi/>
+	      </m:apply>
+	      <m:cn>15</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	for <m:math>
+	  <m:apply>
+	    <m:in/>
+	    <m:ci>m</m:ci>
+	    <m:integers/>
+	  </m:apply>
+	</m:math> such that <m:math><m:ci>m</m:ci></m:math> is not a
+	multiple of <m:math><m:cn>15</m:cn></m:math>.  Since it is
+	possible that the passband ripples of
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> and 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">G</m:ci>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>z</m:ci>
+	      <m:cn>15</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	could add constructively, we specify 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>δ</m:mi>
+		<m:mi>p</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>0.001</m:cn>
+	  </m:apply>
+	</m:math> for both 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	and 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">G</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>, 
+	half the passband ripple specified for <m:math>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>.
+	Assuming that the transition bands in 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> have gain no greater than one, the stopband ripples
+	will not be amplified and we can set
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>δ</m:mi>
+		<m:mi>s</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>0.001</m:cn>
+	  </m:apply>
+	</m:math>
+	for both 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	and <m:math>
+	  <m:apply>
+	    <m:ci type="fn">G</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>, the same 
+	specification as for <m:math>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>.
+      </para>
+
+      <figure id="fig04">
+	<media id="idm1449200" alt=""><image src="../../media/m10420fig4.png" mime-type="image/png"/></media>
+      </figure>
+
+      <para id="para7">
+	The computational savings of the multi-stage structure result
+	from the fact that the transition bands in both
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	and <m:math>
+	  <m:apply>
+	    <m:ci type="fn">G</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> are much wider than the transition bands in 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>.  From the <link target-id="fig04" strength="3">block
+	diagram</link>, we can infer that the transition band in
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">G</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> is centered at 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>ω</m:ci>
+	    <m:apply>
+	      <m:divide/>
+	      <m:pi/>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	with width 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:minus/>
+	      <m:pi/>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>ω</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:cn>0.1</m:cn>
+	      <m:pi/>
+	      <m:ci>rad</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>.  Likewise, the transition bands in 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>  have width 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>4</m:cn>
+		  <m:pi/>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>ω</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:cn>30</m:cn>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:divide/>
+		<m:cn>2.2</m:cn>
+		<m:cn>30</m:cn>
+	      </m:apply>
+	      <m:pi/>
+	      <m:ci>rad</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>.  Plugging these specifications into the Kaiser
+	length approximation, we obtain
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:approx/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>N</m:mi>
+		<m:mi>g</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>64</m:cn>
+	  </m:apply>
+	</m:math>
+	and
+	<m:math display="block">
+	  <m:apply>
+	    <m:approx/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>N</m:mi>
+		<m:mi>f</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>88</m:cn>
+	  </m:apply>
+	</m:math>
+
+	Already we see that it will be much easier, computationally,
+	to design two filters of lengths
+	<m:math><m:cn>64</m:cn></m:math> and
+	<m:math><m:cn>88</m:cn></m:math> than it would be to design
+	one <m:math><m:cn>900</m:cn></m:math>-tap filter.
+      </para>
+
+      <para id="para8">
+	As we now show, the computational savings also carry over to
+	the operation of the two-stage structure.  As a point of
+	reference, recall that a polyphase implementation of the
+	one-stage interpolator would require
+	<m:math>
+	  <m:apply>
+	    <m:approx/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>N</m:mi>
+		<m:mi>h</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>900</m:cn>
+	  </m:apply>
+	</m:math>
+	multiplications per input point.  Using a cascade of two
+	single-stage polyphase interpolators to implement the
+	two-stage scheme, we find that the first interpolator would
+	require
+	<m:math>
+	  <m:apply>
+	    <m:approx/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>N</m:mi>
+		<m:mi>g</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>64</m:cn>
+	  </m:apply>
+	</m:math>
+	per input point 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">x</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math>, while the second
+	would require <m:math>
+	  <m:apply>
+	    <m:approx/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>N</m:mi>
+		<m:mi>f</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>88</m:cn>
+	  </m:apply>
+	</m:math> multiplies per output of <m:math>
+	  <m:apply>
+	    <m:ci type="fn">G</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>.  
+	Since <m:math>
+	  <m:apply>
+	    <m:ci type="fn">G</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> outputs two points per input 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">x</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math>, the two-stage structure would require a total of
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:approx/>
+	    <m:mphantom/>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:plus/>
+		<m:cn>64</m:cn>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:cn>88</m:cn>
+		</m:apply>
+	      </m:apply>
+	      <m:cn>240</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	multiplies per input.  Clearly this is a significant savings
+	over the <m:math><m:cn>900</m:cn></m:math> multiplies required
+	by the one-stage structure.  Note that it was advantageous to
+	choose the first upsampling ratio
+	(<m:math><m:ci><m:msub><m:mi>L</m:mi><m:mn>1</m:mn></m:msub></m:ci></m:math>)
+	as small as possible, so that the second stage of
+	interpolation operates at a low rate.
+      </para>
+
+      <para id="para9">
+	Multi-stage decimation can be formulated in a very similar
+	way.  Using the same example quantities as we did for the case
+	of multi-stage interpolation, we have the block diagrams and
+	filter-design methodology illustrated in <link target-id="fig05" strength="3"/> and <link target-id="fig06" strength="3"/>.
+      </para>
+
+      <figure id="fig05">
+	<media id="idm8601472" alt=""><image src="../../media/m10420fig5.png" mime-type="image/png"/></media>
+      </figure>
+
+      <figure id="fig06">
+	<media id="idm7633216" alt=""><image src="../../media/m10420fig6.png" mime-type="image/png"/></media>
+      </figure>
+
+    </section>
+  </content>
+</document>

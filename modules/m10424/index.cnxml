@@ -1,0 +1,1194 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML">
+  
+  <title>Uniformally Modulated (DFT) Filterbank</title>
+  
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m10424</md:content-id>
+  <md:title>Uniformally Modulated (DFT) Filterbank</md:title>
+  <md:abstract>This module covers the Uniformally Modulated Filterbanks.</md:abstract>
+  <md:uuid>3dea9cf9-32b6-4bf2-940b-cf8d251a0a84</md:uuid>
+</metadata>
+
+  
+  <content>
+    <para id="para1">
+      The <link document="m10929" strength="2">uniform modulated
+	filterbank</link> can be implemented using polyphase
+      filterbanks and DFTs, resulting in huge computational
+      savings.  <link target-id="fig1" strength="3"/> below illustrates
+      the equivalent polyphase/DFT structures for analysis and
+      synthesis.  The impulse responses of the polyphase filters 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mi>P</m:mi>
+	      <m:mi>l</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:ci>z</m:ci>
+	</m:apply>
+      </m:math> 
+      and 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mover accent="true">
+		<m:mi>P</m:mi>
+		<m:mo>¯</m:mo>
+	      </m:mover>
+	      <m:mi>l</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:ci>z</m:ci>
+	</m:apply>
+      </m:math> 
+      can be defined in the time domain as 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">
+	      <m:msub>
+		<m:mover accent="true">
+		  <m:mi>p</m:mi>
+		  <m:mo>¯</m:mo>
+		</m:mover>
+		<m:mi>l</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>m</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">
+	      <m:mover accent="true">
+		<m:mi>h</m:mi>
+		<m:mo>¯</m:mo>
+	      </m:mover>
+	    </m:ci>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>m</m:ci>
+		<m:ci>M</m:ci>
+	      </m:apply>
+	      <m:ci>l</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+      and 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>p</m:mi>
+		<m:mi>l</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>m</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">h</m:ci>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>m</m:ci>
+		<m:ci>M</m:ci>
+	      </m:apply>
+	      <m:ci>l</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>, where 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn" class="discrete">h</m:ci>
+	  <m:ci>n</m:ci>
+	</m:apply>
+      </m:math> and 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn" class="discrete">
+	    <m:mover>
+	      <m:mi>h</m:mi>
+	      <m:mo>¯</m:mo>
+	    </m:mover>
+	  </m:ci>
+	  <m:ci>n</m:ci>
+	</m:apply>
+      </m:math> denote the impulse responses of the analysis and
+      synthesis lowpass filters, respectively.
+    </para>
+    
+    <figure id="fig1">
+      <media id="id1166814189369" alt=""><image src="../../media/poly_f1.png" mime-type="image/png"/></media>
+    </figure>
+    
+    <para id="para">
+      Recall that the standard implementation performs modulation,
+      filtering, and downsampling, in that order.  The polyphase/DFT
+      implementation reverses the order of these operations; it
+      performs downsampling, then filtering, then modulation (if we
+      interpret the DFT as a two-dimensional bank of "modulators").
+      We derive the polyphase/DFT implementation below, starting
+      with the standard implementation and exchanging the order of
+      modulation, filtering, and downsampling.
+    </para>
+
+    <section id="sec1">
+      <title>Polyphase/DFT Implementation Derivation</title>
+      <para id="p1_s1">
+	We start by analyzing the <m:math><m:ci>k</m:ci></m:math>th
+	filterbank branch, analyzed in <link target-id="fig2" strength="3"/>:
+      </para>
+      
+      <figure id="fig2">
+	<media id="id1166814071401" alt=""><image src="../../media/poly_f2.png" mime-type="image/png"/></media>
+	<caption>
+	  <m:math><m:ci>k</m:ci></m:math>th filterbank branch
+	</caption>
+      </figure>
+      
+      <para id="p2_s1">
+	The first step is to reverse the modulation and filtering
+	operations.  To do this, we define a "modulated filter" 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:mi>z</m:mi>
+	  </m:apply>
+	</m:math>:
+	
+	<equation id="eq1"><m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">
+		  <m:msub><m:mi>v</m:mi><m:mi>k</m:mi></m:msub>
+		</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:domainofapplication>
+		  <m:ci>i</m:ci>
+		</m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">h</m:ci>
+		    <m:ci>i</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">x</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>n</m:ci>
+		      <m:ci>i</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:mrow><m:mi>j</m:mi></m:mrow>
+		      <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:times/>
+			  <m:cn>2</m:cn>
+			  <m:pi/>
+			</m:apply>
+			<m:ci>M</m:ci>
+		      </m:apply>
+		      <m:ci>k</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>n</m:ci>
+			<m:ci>i</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:mfenced>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:sum/>
+		      <m:domainofapplication>
+			<m:ci>i</m:ci>
+		      </m:domainofapplication>
+		      <m:apply>
+			<m:times/>
+			<m:apply>
+			  <m:ci type="fn" class="discrete">h</m:ci>
+			  <m:ci>i</m:ci>
+			</m:apply>
+			<m:apply>
+			  <m:exp/>
+			  <m:apply>
+			    <m:times/>
+			    <m:apply>
+			      <m:minus/>
+			      <m:mrow><m:mi>j</m:mi></m:mrow>
+			    </m:apply>
+			    <m:apply>
+			      <m:divide/>
+			      <m:apply>
+				<m:times/>
+				<m:cn>2</m:cn>
+				<m:pi/>
+			      </m:apply>
+			      <m:ci>M</m:ci>
+			    </m:apply>
+			    <m:ci>k</m:ci>
+			    <m:ci>i</m:ci>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">x</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>n</m:ci>
+			<m:ci>i</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:mfenced>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:mrow><m:mi>j</m:mi></m:mrow>
+		    <m:apply>
+		      <m:divide/>
+		      <m:apply>
+			<m:times/>
+			<m:cn>2</m:cn>
+			<m:pi/>
+		      </m:apply>
+		      <m:ci>M</m:ci>
+		    </m:apply>
+		    <m:ci>k</m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:mfenced>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:sum/>
+		      <m:domainofapplication>
+			<m:ci>i</m:ci>
+		      </m:domainofapplication>
+		      <m:apply>
+			<m:times/>
+			<m:apply>
+			  <m:ci type="fn" class="discrete">
+			    <m:msub><m:mi>h</m:mi><m:mi>k</m:mi></m:msub>
+			  </m:ci>
+			  <m:ci>i</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">x</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>n</m:ci>
+			<m:ci>i</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:mfenced>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:mrow><m:mi>j</m:mi></m:mrow>
+		    <m:apply>
+		      <m:divide/>
+		      <m:apply>
+			<m:times/>
+			<m:cn>2</m:cn>
+			<m:pi/>
+		      </m:apply>
+		      <m:ci>M</m:ci>
+		    </m:apply>
+		    <m:ci>k</m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation><m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">x</m:ci><m:ci>n</m:ci>
+	  </m:apply>
+	</m:math> is convolved with the modulated filter and that the
+	filter output is modulated.  This is illustrated in <link target-id="fig3" strength="3"/>:
+      </para>
+      
+      <figure id="fig3">
+	<media id="id1166813106532" alt=""><image src="../../media/poly_f3.png" mime-type="image/png"/></media>
+      </figure>
+	
+      <para id="p3_s1">Notice that the only modulator outputs not discarded by the
+	downsampler are those with time index 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>n</m:ci>
+	    <m:apply>
+	      <m:times/>
+	      <m:ci>m</m:ci>
+	      <m:ci>M</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math> for 
+	<m:math>
+	  <m:apply>
+	    <m:in/>
+	    <m:ci>m</m:ci>
+	    <m:integers/>
+	  </m:apply>
+	</m:math>.  For these outputs, the modulator has the value 
+	
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:exp/>
+	      <m:apply>
+		<m:times/>
+		<m:mrow><m:mi>j</m:mi></m:mrow>
+		<m:apply>
+		  <m:divide/>
+		  <m:apply>
+		    <m:times/>
+		    <m:cn>2</m:cn>
+		    <m:pi/>
+		  </m:apply>
+		  <m:ci>M</m:ci>
+		</m:apply>
+		<m:ci>k</m:ci>
+		<m:ci>m</m:ci>
+		<m:ci>M</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:cn>1</m:cn>
+	  </m:apply>
+	</m:math>, 
+	and thus it can be ignored.  The resulting system is portrayed
+	by:
+      </para><figure id="fig4">
+	<media id="id1166813390397" alt=""><image src="../../media/poly_f4.png" mime-type="image/png"/></media>
+      </figure>
+      
+      <para id="p4_s1">Next we would like to reverse the order of filtering and
+	downsampling.  To apply the Noble identity, we must decompose 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:mi>z</m:mi>
+	  </m:apply>
+	</m:math> 
+	into a bank of upsampled polyphase filters.  The technique
+	used to derive polyphase decimation can be employed here:
+	
+	<equation id="eq2">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>H</m:mi><m:mi>k</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>n</m:ci>
+		</m:bvar>
+		<m:uplimit>
+		  <m:infinity/>
+		</m:uplimit>
+		<m:lowlimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:infinity/>
+		  </m:apply>
+		</m:lowlimit>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">
+		      <m:msub>
+			<m:mi>h</m:mi><m:mi>k</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>l</m:ci>
+		</m:bvar>
+		<m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>m</m:ci>
+		  </m:bvar>
+		  <m:uplimit>
+		    <m:infinity/>
+		  </m:uplimit>
+		  <m:lowlimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:infinity/>
+		    </m:apply>
+		  </m:lowlimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">
+			<m:msub>
+			  <m:mi>h</m:mi>
+			  <m:mi>k</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:plus/>
+			<m:apply>
+			  <m:times/>
+			  <m:ci>m</m:ci>
+			  <m:ci>M</m:ci>
+			</m:apply>
+			<m:ci>l</m:ci>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:power/>
+		      <m:ci>z</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:apply>
+			  <m:plus/>
+			  <m:apply>
+			    <m:times/>
+			    <m:ci>m</m:ci>
+			    <m:ci>M</m:ci>
+			  </m:apply>
+			  <m:ci>l</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	Noting the fact that the <m:math><m:ci>l</m:ci></m:math>th
+	polyphase filter has impulse response:
+	  
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:times/>
+		  <m:ci>m</m:ci>
+		  <m:ci>M</m:ci>
+		</m:apply>
+		<m:ci>l</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">h</m:ci>
+		<m:apply>
+		  <m:plus/>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>m</m:ci>
+		    <m:ci>M</m:ci>
+		  </m:apply>
+		  <m:ci>l</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		   
+		    <m:mrow><m:mo>-</m:mo><m:mi>j</m:mi></m:mrow>
+		  </m:apply>
+		  <m:apply>
+		    <m:divide/>
+		    <m:apply>
+		      <m:times/>
+		      <m:cn>2</m:cn>
+		      <m:pi/>
+		    </m:apply>
+		    <m:ci>M</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>k</m:ci>
+		    <m:apply>
+		      <m:plus/>
+		      <m:apply>
+			<m:times/>
+			<m:ci>m</m:ci>
+			<m:ci>M</m:ci>
+		      </m:apply>
+		      <m:ci>l</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>	      
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">h</m:ci>
+		<m:apply>
+		  <m:plus/>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>m</m:ci>
+		    <m:ci>M</m:ci>
+		  </m:apply>
+		  <m:ci>l</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		   
+		    <m:mrow><m:mo>-</m:mo><m:mi>j</m:mi></m:mrow>
+		  </m:apply>
+		  <m:apply>
+		    <m:divide/>
+		    <m:apply>
+		      <m:times/>
+		      <m:cn>2</m:cn>
+		      <m:pi/>
+		    </m:apply>
+		    <m:ci>M</m:ci>
+		  </m:apply>
+		  <m:ci>k</m:ci>
+		  <m:ci>l</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>	      
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">
+		  <m:msub>
+		    <m:mi>p</m:mi>
+		    <m:mi>l</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>m</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		   
+		    <m:mrow><m:mo>-</m:mo><m:mi>j</m:mi></m:mrow>
+		  </m:apply>
+		  <m:apply>
+		    <m:divide/>
+		    <m:apply>
+		      <m:times/>
+		      <m:cn>2</m:cn>
+		      <m:pi/>
+		    </m:apply>
+		    <m:ci>M</m:ci>
+		  </m:apply>
+		  <m:ci>k</m:ci>
+		  <m:ci>l</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	
+	where 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">
+	      <m:msub>
+		<m:mi>p</m:mi>
+		<m:mi>l</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>m</m:ci>
+	  </m:apply>
+	</m:math> 
+	is the <m:math><m:ci>l</m:ci></m:math>th polyphase filter
+	defined by the original (unmodulated) lowpass filter 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci><m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>, we obtain 
+
+	<equation id="eq3"><m:math>
+	    <m:apply>
+	      <m:eq/>	      
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>H</m:mi><m:mi>k</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>l</m:ci>
+		</m:bvar>
+		<m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>m</m:ci>
+		  </m:bvar>
+		  <m:uplimit>
+		    <m:infinity/>
+		  </m:uplimit>
+		  <m:lowlimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:infinity/>
+		    </m:apply>
+		  </m:lowlimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">
+			<m:msub>
+			  <m:mi>p</m:mi>
+			  <m:mi>l</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>m</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:exp/>
+		      <m:apply>
+			<m:times/>
+			<m:apply>
+			  
+			  <m:mrow><m:mo>-</m:mo><m:mi>j</m:mi></m:mrow>
+			</m:apply>
+			<m:apply>
+			  <m:divide/>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+			  </m:apply>
+			  <m:ci>M</m:ci>
+			</m:apply>
+			<m:ci>k</m:ci>
+			<m:ci>l</m:ci>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:power/>
+		      <m:ci>z</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:apply>
+			  <m:plus/>
+			  <m:apply>
+			    <m:times/>
+			    <m:ci>m</m:ci>
+			    <m:ci>M</m:ci>
+			  </m:apply>
+			  <m:ci>l</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>l</m:ci>
+		  </m:bvar>
+		  <m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		  <m:uplimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>M</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:apply>
+		    <m:times/>
+		     <m:apply>
+		      <m:exp/>
+		      <m:apply>
+			<m:times/>
+			<m:apply>
+			 
+			  <m:mrow><m:mo>-</m:mo><m:mi>j</m:mi></m:mrow>
+			</m:apply>
+			<m:apply>
+			  <m:divide/>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+			  </m:apply>
+			  <m:ci>M</m:ci>
+			</m:apply>
+			<m:ci>k</m:ci>
+			<m:ci>l</m:ci>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:power/>
+		      <m:ci>z</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>l</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>m</m:ci>
+		  </m:bvar>
+		  <m:uplimit>
+		    <m:infinity/>
+		  </m:uplimit>
+		  <m:lowlimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:infinity/>
+		    </m:apply>
+		  </m:lowlimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">
+			<m:msub>
+			  <m:mi>p</m:mi>
+			  <m:mi>l</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>m</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:power/>
+		      <m:apply>
+			<m:power/>
+			<m:ci>z</m:ci>
+			<m:ci>M</m:ci>
+		      </m:apply>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>m</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>l</m:ci>
+		</m:bvar>
+		<m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			
+			<m:mrow><m:mo>-</m:mo><m:mi>j</m:mi></m:mrow>
+		      </m:apply>
+		      <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:times/>
+			  <m:cn>2</m:cn>
+			  <m:pi/>
+			</m:apply>
+			<m:ci>M</m:ci>
+		      </m:apply>
+		      <m:ci>k</m:ci>
+		      <m:ci>l</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>l</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>P</m:mi>
+			<m:mi>l</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:power/>
+		      <m:ci>z</m:ci>
+		      <m:ci>M</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation><m:math><m:ci>k</m:ci></m:math>th filterbank branch (now
+	containing <m:math><m:ci>M</m:ci></m:math> polyphase branches)
+	is in <link target-id="fig5" strength="3"/>:	
+      </para><figure id="fig5">
+	<media id="id7481006" alt=""><image src="../../media/poly_f5.png" mime-type="image/png"/></media>
+	<caption>
+	  <m:math><m:ci>k</m:ci></m:math>th filterbank branch
+	  containing <m:math><m:ci>M</m:ci></m:math> polyphase
+	  branches.
+	</caption>
+      </figure>
+
+      <para id="p5_s1">Because it is a linear operator, the downsampler can be moved
+	through the adders and the (time-invariant) scalings 
+	<m:math>
+	  <m:apply>
+	    <m:exp/>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:minus/>
+		<m:mrow><m:mi>j</m:mi></m:mrow>
+	      </m:apply>
+	      <m:apply>
+		<m:divide/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		</m:apply>
+		<m:ci>M</m:ci>
+	      </m:apply>
+	      <m:ci>k</m:ci>
+	      <m:ci>l</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>.  Finally, the Noble identity is employed to
+	exchange the filtering and downsampling.  The 
+	<m:math><m:ci>k</m:ci></m:math>th filterbank branch becomes: 
+      </para><figure id="fig6">
+	<media id="id1166812065887" alt=""><image src="../../media/poly_f6.png" mime-type="image/png"/></media>
+      </figure>
+
+
+      <para id="p6_s1">Observe that the polyphase outputs 
+	<m:math>
+	  <m:set>
+	    <m:bvar>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">
+		  <m:msub>
+		    <m:mi>v</m:mi>
+		    <m:mi>l</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>m</m:ci>
+	      </m:apply>      
+	    </m:bvar>
+	    <m:condition>
+	      <m:apply>
+		<m:eq/>
+		<m:ci>l</m:ci>
+		<m:set>
+		  <m:cn>0</m:cn>
+		  <m:ci>…</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:set>
+	      </m:apply>
+	    </m:condition>		
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>v</m:mi>
+		  <m:mi>l</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>m</m:ci>
+	    </m:apply>                
+	  </m:set>
+	</m:math>
+
+	are identical for each filterbank branch, while the scalings 
+	
+	<m:math>
+	    <m:set>
+		<m:bvar>
+                  <m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:mrow><m:mi>j</m:mi></m:mrow>
+		    </m:apply>
+		    <m:apply>
+		      <m:divide/>
+		      <m:apply>
+			<m:times/>
+			<m:cn>2</m:cn>
+			<m:pi/>
+		      </m:apply>
+		      <m:ci>M</m:ci>
+		    </m:apply>
+		    <m:ci>k</m:ci>
+		    <m:ci>l</m:ci>
+		  </m:apply>
+		</m:apply>
+		</m:bvar>
+		<m:condition>
+		  <m:apply>
+		    <m:eq/>
+		    <m:ci>l</m:ci>
+		    <m:set>
+		      <m:cn>0</m:cn>
+		      <m:ci>…</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>M</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:set>
+		  </m:apply>
+		</m:condition>
+	    </m:set>
+	</m:math> once.  Using these outputs we can compute the branch
+	outputs via
+	
+	<equation id="eq4">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">
+		  <m:msub>
+		    <m:mi>y</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>m</m:ci>
+	      </m:apply>	      
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>l</m:ci>
+		</m:bvar>
+		<m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">
+		      <m:msub>
+			<m:mi>v</m:mi>
+			<m:mi>l</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>m</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:minus/>
+			<m:mrow><m:mi>j</m:mi></m:mrow>
+		      </m:apply>
+		      <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:times/>
+			  <m:cn>2</m:cn>
+			  <m:pi/>
+			</m:apply>
+			<m:ci>M</m:ci>
+		      </m:apply>
+		      <m:ci>k</m:ci>
+		      <m:ci>l</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>		
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	From the previous equation it is clear that 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">
+	      <m:msub>
+		<m:mi>y</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>m</m:ci>
+	  </m:apply>
+	</m:math> 
+	corresponds to the <m:math><m:ci>k</m:ci></m:math>th DFT
+	output given the <m:math><m:ci>M</m:ci></m:math>-point input
+	sequence 
+	<m:math>
+	    <m:set>
+	     <m:bvar>
+                 <m:apply>
+		  <m:ci type="fn" class="discrete">
+		    <m:msub>
+		      <m:mi>v</m:mi>
+		      <m:mi>l</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>m</m:ci>
+		 </m:apply>
+		</m:bvar>
+		<m:condition>
+		  <m:apply>
+		    <m:eq/>
+		    <m:ci>l</m:ci>
+		    <m:set>
+		      <m:cn>0</m:cn>
+		      <m:ci>…</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>M</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:set>
+		  </m:apply>
+		</m:condition>
+	    </m:set>
+	</m:math>.  Thus the <m:math><m:ci>M</m:ci></m:math>
+	filterbank branches can be computed in parallel by taking an
+	<m:math><m:ci>M</m:ci></m:math>-point DFT of the
+	<m:math><m:ci>M</m:ci></m:math> polyphase outputs (see <link target-id="fig7"/>).
+      </para><figure id="fig7">
+	<media id="id1166813062725" alt=""><image src="../../media/poly_f7.png" mime-type="image/png"/></media>
+      </figure>
+      
+      <para id="p7_s1">
+	The polyphase/DFT synthesis bank can be derived in a similar
+	manner. 
+      </para>
+      
+    </section>
+  </content>
+</document>

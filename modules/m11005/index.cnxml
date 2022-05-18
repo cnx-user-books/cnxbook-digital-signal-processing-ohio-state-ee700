@@ -1,0 +1,1607 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Design of Orthogonal PR-FIR Filterbanks via Halfband Spectral Factorization</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>ff20d743-089f-4d0f-baf7-f1b07c028534</md:uuid>
+</metadata>
+
+
+  <content>
+
+    <section id="sec2">
+      <title>Design of Orthogonal PR-FIR Filterbanks via Halfband
+	Spectral Factorization</title>
+      <para id="p3">
+	Recall that analysis-filter design for orthogonal PR-FIR
+	filterbanks reduces to the design of a real-coefficient causal
+	FIR prototype filter 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	that satisfies the power-symmetry condition 
+
+	<equation id="eq5a">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:abs/>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:exp/>
+			<m:apply>
+			  <m:times/>
+			  <m:imaginaryi/>
+			  <m:ci>ω</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>		
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:abs/>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:exp/>			
+			<m:apply>
+			  <m:times/>
+			  <m:imaginaryi/>		    
+			  <m:apply>
+			    <m:minus/>
+			    <m:pi/>
+			    <m:ci>ω</m:ci>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	      <m:cn>1</m:cn>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	Power-symmetric filters are closely related to "halfband"
+	filters.  A zero-phase halfband filter is a zero-phase filter 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> with the property
+	
+	<equation id="eq5">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:ci type="fn">F</m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn">F</m:ci>
+		  <m:ci>-z</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:cn>1</m:cn>
+	    </m:apply>
+	  </m:math>
+	</equation>
+	
+	When, in addition, 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> has real-valued coefficients, its DTFT is
+	"amplitude-symmetric":
+
+	<equation id="eq6">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:ci type="fn">F</m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn">F</m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>			
+		      <m:apply>
+			<m:minus/>
+			<m:pi/>
+			<m:ci>ω</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:cn>1</m:cn>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	The amplitude-symmetry property is illustrated in <link target-id="fig3" strength="3"/>:
+      </para>
+
+      <figure id="fig3">
+	<media id="idm17312" alt=""><image src="../../media/ortho_f3.png" mime-type="image/png"/></media>
+      </figure>      
+
+      <para id="sec2_p2">
+	If, in addition to being real-valued, 
+	<footnote id="idm7736912">
+	  Recall that zero-phase filters have real-valued DTFTs.
+	</footnote> 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:apply>
+	      <m:exp/>			
+	      <m:apply>
+		<m:times/>
+		<m:imaginaryi/>		    
+		<m:ci>ω</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math> is non-negative, then 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:apply>
+	      <m:exp/>			
+	      <m:apply>
+		<m:times/>
+		<m:imaginaryi/>		    
+		<m:ci>ω</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math> constitutes a valid power response.  If we can find 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	such that 
+
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:power/>
+	      <m:apply>
+		<m:abs/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:exp/>			
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>		    
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn">F</m:ci>
+	      <m:apply>
+		<m:exp/>			
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>		    
+		  <m:ci>ω</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>	    
+	  </m:apply>
+	</m:math>, 
+
+	then this 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	will satisfy the desired power-symmetry property 	
+	
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:power/>
+		<m:apply>
+		  <m:abs/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:exp/>
+		      <m:apply>
+			<m:times/>
+			<m:imaginaryi/>
+			<m:ci>ω</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:cn>2</m:cn>
+	      </m:apply>		
+	      <m:apply>
+		<m:power/>
+		<m:apply>
+		  <m:abs/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:exp/>			
+		      <m:apply>
+			<m:times/>
+			<m:imaginaryi/>		    
+			<m:apply>
+			  <m:minus/>
+			  <m:pi/>
+			  <m:ci>ω</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	    </m:apply>
+	    <m:cn>1</m:cn>
+	  </m:apply>
+	</m:math>.
+      </para>
+
+      <para id="sec2_p3">
+	First, realize 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:apply>
+	      <m:exp/>			
+	      <m:apply>
+		<m:times/>
+		<m:imaginaryi/>		    
+		<m:ci>ω</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math> 
+	is easily modified to ensure non-negativity: construct 
+	
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">q</m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">f</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:ci>ε</m:ci>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">δ</m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply>
+	      </m:apply>	     
+	    </m:apply>
+	  </m:apply>
+	</m:math> for sufficiently large
+	<m:math><m:ci>ɛ</m:ci></m:math>, which will raise 
+	
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:apply>
+	      <m:exp/>			
+	      <m:apply>
+		<m:times/>
+		<m:imaginaryi/>		    
+		<m:ci>ω</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	by <m:math><m:ci>ε</m:ci></m:math> uniformly over
+	<m:math><m:ci>ω</m:ci></m:math> (see <link target-id="fig4" strength="3"/>).
+      </para>
+
+      <figure id="fig4">
+	<media id="idm11786704" alt=""><image src="../../media/ortho_f4.png" mime-type="image/png"/></media>
+      </figure>
+      
+      <para id="sec2_p3a">
+	The resulting 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">Q</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	is non-negative and satisfies the amplitude-symmetry condition 
+
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:ci type="fn">Q</m:ci>
+		<m:apply>
+		  <m:exp/>			
+		  <m:apply>
+		    <m:times/>
+		    <m:imaginaryi/>		    
+		    <m:ci>ω</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn">Q</m:ci>
+		<m:apply>
+		  <m:exp/>			
+		  <m:apply>
+		    <m:times/>
+		    <m:imaginaryi/>	
+		    <m:apply>
+		      <m:minus/>
+		      <m:pi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:plus/>
+	      <m:cn>1</m:cn>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:ci>ε</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>.  
+
+	We will make up for the additional gain later.  The procedure
+	by which 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	can be calculated from the raised halfband 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">Q</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>, known as <term>spectral factorization</term>, is
+	described next.
+      </para>
+
+      <para id="sec2_p5">
+	Since 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">q</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math> 
+	is conjugate-symmetric around the origin, the roots of 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">Q</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> come in pairs 
+
+	<m:math>
+	  <m:apply>
+	    <m:set>
+	      <m:ci><m:msub>
+		<m:mi>a</m:mi>
+		<m:mi>i</m:mi>
+	      </m:msub></m:ci>
+	      <m:apply>
+		<m:divide/>
+		<m:cn>1</m:cn>
+		<m:apply>
+		  <m:conjugate/>
+		  <m:ci><m:msub>
+		    <m:mi>a</m:mi>
+		    <m:mi>i</m:mi>
+		  </m:msub></m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:set>
+	  </m:apply>
+	</m:math>.  This can be seen by writing 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">Q</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> in the factored form below, which clearly
+	corresponds to a polynomial with coefficients
+	conjugate-symmetric around the 
+	<m:math>
+	  <m:msup>
+	    <m:mn>0</m:mn>
+	    <m:ci>th</m:ci>
+	  </m:msup>
+	</m:math>-order coefficient.
+	
+	<equation id="eq21">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">Q</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>n</m:ci>
+		</m:bvar>
+		<m:lowlimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:cn>N</m:cn>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:apply>
+		</m:lowlimit>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>N</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">q</m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+
+	      <m:apply>
+		<m:times/>
+		<m:ci>A</m:ci>
+		<m:apply>
+		  <m:product/>
+		  <m:bvar>
+		    <m:ci>i</m:ci>
+		  </m:bvar>
+		  <m:lowlimit>
+		    <m:cn>1</m:cn>
+		  </m:lowlimit>
+		  <m:uplimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>N</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:cn>1</m:cn>
+		      <m:apply>
+			<m:times/>
+			<m:ci>
+			  <m:msub>
+			    <m:mi>a</m:mi>
+			    <m:mi>i</m:mi>
+			  </m:msub>
+			</m:ci>
+			<m:apply>
+			  <m:inverse/>
+			  <m:ci>z</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:minus/>
+		      <m:cn>1</m:cn>
+		      <m:apply>
+			<m:times/>
+			<m:apply>
+			  <m:conjugate/>
+			  <m:ci>
+			    <m:msub>
+			      <m:mi>a</m:mi>
+			      <m:mi>i</m:mi>
+			    </m:msub>
+			  </m:ci>
+			</m:apply>
+			<m:ci>z</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	where 
+	<m:math>
+	  <m:apply>
+	    <m:in/>
+	    <m:ci>A</m:ci>
+	    <m:ci><m:msup>
+	      <m:mi>ℝ</m:mi>
+	      <m:mi>+</m:mi>
+	    </m:msup></m:ci>
+	  </m:apply>
+	</m:math>.  Note that the complex numbers 
+
+	<m:math>
+	  <m:apply>
+	    <m:set>
+	      <m:ci><m:msub>
+		<m:mi>a</m:mi>
+		<m:mi>i</m:mi>
+	      </m:msub></m:ci>
+	      <m:apply>
+		<m:divide/>
+		<m:cn>1</m:cn>
+		<m:apply>
+		  <m:conjugate/>
+		  <m:ci><m:msub>
+		    <m:mi>a</m:mi>
+		    <m:mi>i</m:mi>
+		  </m:msub></m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:set>
+	  </m:apply>
+	</m:math>
+	
+	are symmetric across the unit circle in the <link document="m10556" target-id="zplane" strength="3">z-plane</link>.
+	Thus, for ever root of
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">Q</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	inside the unit-circle, there exists a root outside of the
+	unit circle (see <link target-id="fig5" strength="3"/>).
+      </para>
+
+      <figure id="fig5">
+	<media id="idp1923584" alt=""><image src="../../media/ortho_f5.png" mime-type="image/png"/></media>
+      </figure>
+      
+      <para id="sec2_p6">
+	Let us assume, without loss of generality, that 
+	<m:math>
+	  <m:apply>
+	    <m:lt/>
+	    <m:apply>
+	      <m:abs/>
+	      <m:ci><m:msub>
+		<m:mi>a</m:mi>
+		<m:mi>i</m:mi>
+	      </m:msub></m:ci>
+	    </m:apply>
+	    <m:cn>1</m:cn>
+	  </m:apply>
+	</m:math>.  If we form 
+	
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	
+	from the roots of 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">Q</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	with magnitude less than one:  
+
+	<equation id="eq19">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>	    
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>H</m:mi>
+		    <m:mn>0</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:root/>
+		  <m:ci>A</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:product/>
+		  <m:bvar>
+		    <m:ci>i</m:ci>
+		  </m:bvar>
+		  <m:lowlimit>
+		    <m:cn>1</m:cn>
+		  </m:lowlimit>
+		  <m:uplimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>N</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:cn>1</m:cn>
+		    <m:apply>
+		      <m:times/>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>a</m:mi>
+			  <m:mi>i</m:mi>
+			</m:msub>
+		      </m:ci>
+			<m:apply>
+			<m:inverse/>
+			<m:ci>z</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	then it is apparent that 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:power/>
+	      <m:apply>
+		<m:abs/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn">Q</m:ci>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:ci>ω</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>.  This 
+		
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	is the so-called <term>minimum-phase spectral factor</term> of 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">Q</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>.
+      </para>
+
+
+      <para id="sec2_p7">
+	Actually, in order to make 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:power/>
+	      <m:apply>
+		<m:abs/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn">Q</m:ci>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:ci>ω</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>, we are not required to choose all roots inside the
+	unit circle; it is enough to choose one root from every
+	unit-circle-symmetric pair.  However, we do want to ensure
+	that
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>
+	has real-valued coefficients.  For this, we must ensure that
+	roots come in conjugate-symmetric pairs,
+	<foreign>i.e.</foreign>, pairs having symmetry with respect to
+	the real axis in the complex plane (<link target-id="fig6" strength="3"/>).
+      </para>
+      
+      <figure id="fig6">
+	<media id="idm6736064" alt=""><image src="../../media/ortho_f6.png" mime-type="image/png"/></media>
+      </figure>
+
+      <para id="sec2_p8">
+	Because 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">Q</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	has real-valued coefficients, we know that its roots satisfy
+	this conjugate-symmetry property.  Then forming 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	from the roots of
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">Q</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> 
+	that are strictly inside (or strictly outside) the unit
+	circle, we ensure that 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> has real-valued coefficients.
+      </para>
+
+      <para id="sec2_p9">
+	Finally, we say a few words about the design of the halfband
+	filter 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>.  The <term>window design</term> method is one technique that
+	could be used in this application.  The window design method
+	starts with an ideal lowpass filter, and windows its
+	doubly-infinite impulse response using a window function with
+	finite time-support.  The ideal real-valued zero-phase halfband
+	filter has impulse response (where 
+	<m:math>
+	  <m:apply>
+	    <m:in/>
+	    <m:ci>n</m:ci>
+	    <m:integers/>
+	  </m:apply>
+	</m:math>): 
+
+	<equation id="eq20">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">
+		  <m:mover accent="true">
+		    <m:mi>f</m:mi>
+		    <m:mo>¯</m:mo>
+		  </m:mover>
+		</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:divide/>
+		<m:apply>
+		  <m:sin/>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:divide/>
+		      <m:pi/>
+		      <m:cn>2</m:cn>
+		    </m:apply>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:pi/>
+		  <m:ci>n</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+	
+	which has the important property that all even-indexed
+	coefficients except 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">
+	      <m:mover accent="true">
+		<m:mi>f</m:mi>
+		<m:mo>¯</m:mo>
+	      </m:mover>
+	    </m:ci>
+	    <m:cn>0</m:cn>
+	  </m:apply>
+	</m:math>
+	equal zero.  It can be seen that this latter property is
+	implied by the halfband definition 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:ci type="fn"> 
+		  <m:mover accent="true">
+		    <m:mi>F</m:mi>
+		    <m:mo>¯</m:mo>
+		  </m:mover>
+		</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn"> 
+		  <m:mover accent="true">
+		    <m:mi>F</m:mi>
+		    <m:mo>¯</m:mo>
+		  </m:mover>
+		</m:ci>
+		<m:apply>
+		  <m:inverse/>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:cn>1</m:cn>
+	  </m:apply>
+	</m:math> since, due to odd-coefficient cancellation, we find 
+
+	<equation id="eq22">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:cn>1</m:cn>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:ci type="fn"> 
+		    <m:mover accent="true">
+		      <m:mi>F</m:mi>
+		      <m:mo>¯</m:mo>
+		    </m:mover>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn"> 
+		    <m:mover accent="true">
+		      <m:mi>F</m:mi>
+		      <m:mo>¯</m:mo>
+		    </m:mover>
+		  </m:ci>
+		  <m:apply>
+		    <m:inverse/>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>	      
+	      <m:apply>
+                <m:ci><m:mo>⇔</m:mo></m:ci>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar>
+		      <m:ci>m</m:ci>
+		    </m:bvar>
+		    <m:lowlimit>
+		      <m:apply>
+			<m:minus/>
+			<m:infinity/>
+		      </m:apply>
+		    </m:lowlimit>
+		    <m:uplimit>
+		      <m:infinity/>
+		    </m:uplimit>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:ci type="fn" class="discrete"> 
+			  <m:mover accent="true">
+			    <m:mi>f</m:mi>
+			    <m:mo>¯</m:mo>
+			  </m:mover>
+			</m:ci>
+			<m:apply>
+			  <m:times/>
+			  <m:cn>2</m:cn>
+			  <m:ci>m</m:ci>
+			</m:apply>
+		      </m:apply>
+		      <m:apply>
+			<m:power/>
+			<m:ci>z</m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:ci>m</m:ci>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>		
+		<m:apply>
+		  <m:eq/>
+		  <m:apply>
+		    <m:ci type="fn"> 
+		      <m:mover accent="true" class="discrete">
+			<m:mi>f</m:mi>
+			<m:mo>¯</m:mo>
+		      </m:mover>
+		    </m:ci>
+		    <m:apply>
+		      <m:times/>
+		      <m:cn>2</m:cn>
+		      <m:ci>m</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:divide/>
+		      <m:cn>1</m:cn>
+		      <m:cn>2</m:cn>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">δ</m:ci>
+		      <m:ci>m</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>	
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	Note that windowing the ideal halfband does not alter the
+	property 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn"> 
+		<m:mover accent="true">
+		  <m:mi>f</m:mi>
+		  <m:mo>¯</m:mo>
+		</m:mover>
+	      </m:ci>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:ci>m</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:divide/>
+		<m:cn>1</m:cn>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">δ</m:ci>
+		<m:ci>m</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>, thus the window design 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">F</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> is guaranteed to be halfband feature.  Furthermore,
+	a real-valued window with origin-symmetry preserves the
+	real-valued zero-phase property of 
+	<m:math>
+	  <m:apply>
+	    <m:set>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">
+		  <m:mover>
+		    <m:mi>f</m:mi>
+		    <m:mo>¯</m:mo>
+		  </m:mover>
+		</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	    </m:set>
+	  </m:apply>
+	</m:math> above.  It turns out that many of the other popular
+	design methods (<foreign>e.g.</foreign>, LS and equiripple)
+	also produce halfband filters when the cutoff is specified at
+	<m:math>
+	  <m:apply>
+	    <m:divide/>
+	    <m:pi/>
+	    <m:cn>2</m:cn>
+	  </m:apply>
+	</m:math> radians and all passband/stopband specifications
+	are symmetric with respect to 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>ω</m:ci>
+	    <m:apply>
+	      <m:divide/>
+	      <m:pi/>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>.
+      </para>
+
+
+      <!-- ************************************* -->
+      <!-- ************************************* -->
+      <!-- ************************************* -->
+
+
+      <section id="sub2">
+	<title>Design Procedure Summary</title>
+	<para id="sec2_p10">
+	  We now summarize the design procedure for a
+	  length-<m:math><m:ci>N</m:ci></m:math> analysis lowpass
+	  filter for an orthogonal perfect-reconstruction FIR
+	  filterbank:
+
+	  <list id="l_design" list-type="enumerated">
+	    <item>
+	      Design a zero-phase real-coefficient halfband lowpass
+	      filter 
+	      <m:math>
+		<m:apply>
+		  <m:eq/>
+		  <m:apply>
+		    <m:ci type="fn">F</m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar>
+		      <m:ci>n</m:ci>
+		    </m:bvar>
+		    <m:lowlimit>
+		      <m:apply>
+			<m:minus/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>N</m:ci>
+			  <m:cn>1</m:cn>
+			</m:apply>
+		      </m:apply>
+		    </m:lowlimit>
+		    <m:uplimit>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>N</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:uplimit>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:ci type="fn" class="discrete">f</m:ci>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		      <m:apply>
+			<m:power/>
+			<m:ci>z</m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>n</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply> 
+		  </m:apply>
+		</m:apply>
+	      </m:math> where <m:math><m:ci>N</m:ci></m:math> is a
+	      positive even integer (via, <foreign>e.g.</foreign>,
+	      window designs, LS, or equiripple).
+	    </item>
+
+	    <item>
+	      Calculate 
+	      <m:math>	      
+		<m:ci>ε</m:ci>
+	      </m:math>, 
+	      the maximum negative value of 
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn">F</m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:math>.  
+
+	      (Recall that 
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn">F</m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:math> is real-valued for all 
+	      <m:math><m:ci>ω</m:ci></m:math> because it has a
+	      zero-phase response.)  Then create "raised halfband" 
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn">Q</m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:math> 
+	      via 
+	      <m:math>
+		<m:apply>
+		  <m:eq/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">q</m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:plus/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">f</m:ci>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:times/>
+		      <m:ci>ε</m:ci>
+		      <m:apply>
+			<m:ci type="fn" class="discrete">δ</m:ci>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:math>, ensuring that 
+	      
+	      <m:math>
+		<m:apply>
+		  <m:geq/>
+		  <m:apply>
+		    <m:ci type="fn">Q</m:ci>
+		    <m:apply>
+		      <m:exp/>			
+		      <m:apply>
+			<m:times/>
+			<m:imaginaryi/>		    
+			<m:ci>ω</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>0</m:cn>
+		</m:apply>
+	      </m:math>, forall <m:math><m:ci>ω</m:ci></m:math>. 
+	    </item>
+	    
+
+	    <item>
+	      Compute the roots of 
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn">Q</m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:math>, which should come in unit-circle-symmetric
+	      pairs 	    
+	      <m:math>
+		<m:apply>
+		  <m:set>
+		    <m:ci><m:msub>
+		      <m:mi>a</m:mi>
+		      <m:mi>i</m:mi>
+		    </m:msub></m:ci>
+		    <m:apply>
+		      <m:divide/>
+		      <m:cn>1</m:cn>
+		      <m:apply>
+			<m:conjugate/>
+			<m:ci><m:msub>
+			  <m:mi>a</m:mi>
+			  <m:mi>i</m:mi>
+			</m:msub></m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:set>
+		</m:apply>
+	      </m:math>. Then collect the roots with magnitude less than
+	      one into filter 
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mover accent="true">
+			<m:mi>H</m:mi>
+			<m:mo>^</m:mo>
+		      </m:mover>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:math>.
+	    </item>
+
+
+	    <item>
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mover accent="true">
+			<m:mi>H</m:mi>
+			<m:mo>^</m:mo>
+		      </m:mover>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:math> is the desired prototype filter except for a
+	      scale factor.  Recall that we desire 
+	      <m:math display="block">
+		<m:apply>
+		  <m:eq/>
+		  <m:apply>
+		    <m:plus/>
+		    <m:apply>
+		      <m:power/>
+		      <m:apply>
+			<m:abs/>
+			<m:apply>
+			  <m:ci type="fn">
+			    <m:msub>
+			      <m:mi>H</m:mi>
+			      <m:mn>0</m:mn>
+			    </m:msub>
+			  </m:ci>
+			  <m:apply>
+			    <m:exp/>
+			    <m:apply>
+			      <m:times/>
+			      <m:imaginaryi/>
+			      <m:ci>ω</m:ci>
+			    </m:apply>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		      <m:cn>2</m:cn>
+		    </m:apply>		
+		    <m:apply>
+		      <m:power/>
+		      <m:apply>
+			<m:abs/>
+			<m:apply>
+			  <m:ci type="fn">
+			    <m:msub>
+			      <m:mi>H</m:mi>
+			      <m:mn>0</m:mn>
+			    </m:msub>
+			  </m:ci>
+			  <m:apply>
+			    <m:exp/>			
+			    <m:apply>
+			      <m:times/>
+			      <m:imaginaryi/>		    
+			      <m:apply>
+				<m:minus/>
+				<m:pi/>
+				<m:ci>ω</m:ci>
+			      </m:apply>
+			    </m:apply>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		      <m:cn>2</m:cn>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:math>
+
+	      Using <link document="m10769" target-id="parsec" strength="3">Parseval's Theorem</link>, we see that
+	      <m:math>
+		<m:apply>
+		  <m:set>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">
+			<m:msub>
+			  <m:mover accent="true">
+			    <m:mi>h</m:mi>
+			    <m:mo>^</m:mo>
+			  </m:mover>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		  </m:set>
+		</m:apply>
+	      </m:math> should be scaled to give 
+	      <m:math>
+		<m:apply>
+		  <m:set>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">
+			<m:msub>
+			  <m:mi>h</m:mi>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		  </m:set>
+		</m:apply>
+	      </m:math> 
+	      for which 
+	      
+	      <m:math>
+		<m:apply>
+		  <m:eq/>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar>
+		      <m:ci>n</m:ci>
+		    </m:bvar>
+		    <m:lowlimit>
+		      <m:cn>0</m:cn>
+		    </m:lowlimit>
+		    <m:uplimit>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>N</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:uplimit>
+		    <m:apply>
+		      <m:power/>
+		      <m:apply> 
+			<m:ci type="fn" class="discrete">
+			  <m:msub>
+			    <m:mi>h</m:mi>
+			    <m:mn>0</m:mn>
+			  </m:msub>
+			</m:ci>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		      <m:cn>2</m:cn>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:divide/>
+		    <m:cn>1</m:cn>
+		    <m:cn>2</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:math>.
+	    </item>
+	  </list>
+	</para>
+	
+      </section>  
+    </section>
+  </content>
+  
+</document>

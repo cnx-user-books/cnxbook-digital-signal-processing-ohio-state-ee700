@@ -1,0 +1,1486 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+
+
+  <title>Polyphase Resampling with Arbitrary (Non-Rational or Time-Varying) Rate</title>
+
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>30153d7b-7130-4dd3-89af-53125f3891e5</md:uuid>
+</metadata>
+
+
+  <content>
+    <para id="para1">
+      Though we have derived a computationally efficient polyphase
+      resampler for rational factors
+      <m:math><m:apply><m:eq/><m:ci>Q</m:ci><m:apply>
+      <m:divide/><m:ci>L</m:ci><m:ci>M</m:ci></m:apply></m:apply>
+      </m:math>, the structure will not be practical to implement for
+      large <m:math> <m:ci>L</m:ci></m:math>, such as might occur when
+      the desired resampling factor <m:math><m:ci>Q</m:ci></m:math> is
+      not well approximated by a ratio of two small
+      integers. Furthermore, we may encounter applications in which
+      <m:math><m:ci>Q</m:ci></m:math> is chosen on-the-fly, so that
+      the number <m:math><m:ci>L</m:ci></m:math> of polyphase branches
+      cannot be chosen <foreign>a priori</foreign>. Fortunately, a
+      slight modification of our exisiting structure will allow us to
+      handle both of these cases. </para>
+
+    <para id="para2">
+      Say that our goal is to produce the 
+      <m:math>
+	<m:apply>
+	  <m:divide/>
+	  <m:ci>Q</m:ci>
+	  <m:ci>T</m:ci>
+	</m:apply>
+      </m:math>-rate samples 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn"><m:msub>
+	      <m:mi>x</m:mi>
+	      <m:mi>c</m:mi>
+	    </m:msub></m:ci>
+	  <m:apply>
+	    <m:times/>
+	    <m:ci>m</m:ci>
+	    <m:apply>
+	      <m:divide/>
+	      <m:ci>Q</m:ci>
+	      <m:ci>T</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math> given 
+      the 
+      <m:math>
+	<m:apply>
+	  <m:divide/>
+	  <m:cn>1</m:cn>
+	  <m:ci>T</m:ci>
+	</m:apply>
+      </m:math>-rate samples 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn"><m:msub>
+	      <m:mi>x</m:mi>
+	      <m:mi>c</m:mi>
+	    </m:msub></m:ci>
+	  <m:apply>
+	    <m:times/>
+	    <m:ci>n</m:ci>
+	    <m:ci>T</m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math>, where we assume that 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn"><m:msub>
+	      <m:mi>x</m:mi>
+	      <m:mi>c</m:mi>
+	    </m:msub></m:ci>
+	  <m:ci>t</m:ci>
+	</m:apply>
+      </m:math> is bandlimited to 
+      <m:math>
+	<m:apply>
+	  <m:divide/>
+	  <m:cn>1</m:cn>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>2</m:cn>
+	    <m:ci>T</m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math> and <m:math><m:ci>Q</m:ci></m:math> can be any
+      positive real number. Consider, for a moment, the outputs of
+      polyphase filters in an ideal zero-delay
+      <m:math><m:ci>L</m:ci></m:math>-branch polyphase interpolation
+      bank (as in <link target-id="figfix" strength="3"/>).
+    </para>
+
+    <figure id="figfix">
+      <media id="idm281424" alt=""><image src="../../media/m10456fig1.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para3">
+      We know that, at time index <m:math><m:ci>n</m:ci></m:math>, the
+      <m:math><m:ci><m:msup><m:mi>p</m:mi><m:mo>th</m:mo></m:msup>
+	</m:ci></m:math> and
+      <m:math><m:ci><m:msup><m:mrow><m:mo>(</m:mo><m:mi>p</m:mi>
+	      <m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow><m:mo>th</m:mo></m:msup>
+	</m:ci></m:math> filter outputs equal
+
+      <m:math display="block">
+	<m:apply>
+	  <m:and/>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>x</m:mi>
+		<m:mi>c</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:plus/>
+		<m:ci>n</m:ci>
+		<m:apply>
+		  <m:divide/>
+		  <m:ci>p</m:ci>
+		  <m:ci>L</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:ci>T</m:ci>
+	    </m:apply>
+	  </m:apply>
+	  
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>x</m:mi>
+		<m:mi>c</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:plus/>
+		<m:ci>n</m:ci>
+		<m:apply>
+		  <m:divide/>
+		  <m:apply>
+		    <m:plus/>
+		    <m:ci>p</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		  <m:ci>L</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:ci>T</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+
+      respectively. Because the highest frequency in 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn"><m:msub>
+	      <m:mi>x</m:mi>
+	      <m:mi>c</m:mi>
+	    </m:msub></m:ci>
+	  <m:ci>t</m:ci>
+	</m:apply>
+      </m:math> is limited to 
+      <m:math>
+	<m:apply>
+	  <m:divide/>
+	  <m:cn>1</m:cn>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>2</m:cn>
+	    <m:ci>T</m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math>, the waveform cannot not change abruptly, and
+      therefore cannot change significantly over a very small time
+      interval. In fact, when <m:math><m:ci>L</m:ci></m:math> is
+      large, the waveform is nearly linear in the time interval
+      between
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:ci>t</m:ci>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:plus/>
+	      <m:ci>n</m:ci>
+	      <m:apply>
+		<m:divide/>
+		<m:ci>p</m:ci>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:ci>T</m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math> and 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:ci>t</m:ci>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:plus/>
+	      <m:ci>n</m:ci>
+	      <m:apply>
+		<m:divide/>
+		<m:apply>
+		  <m:plus/>
+		  <m:ci>p</m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:ci>T</m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math>, so that, for any 
+      <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:ci>α</m:ci>
+	  <m:interval closure="closed-open">
+	    <m:cn>0</m:cn>
+	    <m:cn>1</m:cn>
+	  </m:interval>
+	</m:apply>
+      </m:math>,
+
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>x</m:mi>
+		<m:mi>c</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:plus/>
+		<m:ci>n</m:ci>
+		<m:apply>
+		  <m:divide/>
+		  <m:apply>
+		    <m:plus/>
+		    <m:ci>p</m:ci>
+		    <m:ci>α</m:ci>
+		  </m:apply>
+		  <m:ci>L</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:ci>T</m:ci>
+	    </m:apply>
+	  </m:apply>
+
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>x</m:mi>
+		<m:mi>c</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:minus/>
+		  <m:cn>1</m:cn>
+		  <m:ci>α</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:plus/>
+		  <m:ci>n</m:ci>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>p</m:ci>
+		    <m:ci>L</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:ci>T</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:ci>α</m:ci>
+		<m:apply>
+		  <m:plus/>
+		  <m:ci>n</m:ci>
+		  <m:apply>
+		    <m:divide/>
+		    <m:apply>
+		      <m:plus/>
+		      <m:ci>p</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		    <m:ci>L</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:ci>T</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+
+      <m:math display="block">
+	<m:apply>
+	  <m:approx/>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>x</m:mi>
+		<m:mi>c</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:plus/>
+		<m:ci>n</m:ci>
+		<m:apply>
+		  <m:divide/>
+		  <m:apply>
+		    <m:plus/>
+		    <m:ci>p</m:ci>
+		    <m:ci>α</m:ci>
+		  </m:apply>
+		  <m:ci>L</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:ci>T</m:ci>
+	    </m:apply>
+	  </m:apply>
+	  <m:apply>
+	    <m:plus/>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:minus/>
+		<m:cn>1</m:cn>
+		<m:ci>α</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>x</m:mi>
+		    <m:mi>c</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:plus/>
+		    <m:ci>n</m:ci>
+		    <m:apply>
+		      <m:divide/>
+		      <m:ci>p</m:ci>
+		      <m:ci>L</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:ci>T</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:ci>α</m:ci>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>x</m:mi>
+		    <m:mi>c</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:plus/>
+		    <m:ci>n</m:ci>
+		    <m:apply>
+		      <m:divide/>
+		      <m:apply>
+			<m:plus/>
+			<m:ci>p</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		      <m:ci>L</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:ci>T</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+        </m:apply>
+      </m:math>
+
+      This suggests that we can closely approximate
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn"><m:msub>
+	      <m:mi>x</m:mi>
+	      <m:mi>c</m:mi>
+	    </m:msub></m:ci>
+	  <m:ci>t</m:ci>
+	</m:apply>
+      </m:math> at any 
+      <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:ci>t</m:ci>
+	  <m:reals/>
+	</m:apply>
+      </m:math> by 
+      linearly interpolating adjacent-branch outputs of a polyphase 
+      filterbank with a large enough <m:math><m:ci>L</m:ci></m:math>. 
+      The details are worked out below.
+    </para>
+
+    <para id="para4">
+      Assume an ideal <m:math><m:ci>L</m:ci></m:math>-branch 
+      polyphase filterbank with <m:math><m:ci>d</m:ci></m:math>-delay 
+      master filter and <m:math><m:ci>T</m:ci></m:math>-sampled input, 
+      giving access to <m:math>  <m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mi>x</m:mi>
+	      <m:mi>c</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:plus/>
+	      <m:ci>n</m:ci>
+	      <m:apply>
+		<m:divide/>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>p</m:ci>
+		  <m:ci>d</m:ci>
+		</m:apply>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:ci>T</m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+      for <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:ci>n</m:ci>
+	  <m:integers/>
+	</m:apply>
+      </m:math>
+      and 
+      <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:ci>p</m:ci>
+	  <m:set>
+	    <m:cn>0</m:cn>
+	    <m:ci>…</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci>L</m:ci>
+	      <m:cn>1</m:cn>
+	    </m:apply>
+	  </m:set>
+	</m:apply>
+      </m:math>. By linearly interpolating branch outputs <m:math><m:ci>p
+	</m:ci></m:math> and 
+      <m:math>
+	<m:apply>
+	  <m:plus/>
+	  <m:ci>p</m:ci>
+	  <m:cn>1</m:cn>
+	</m:apply>
+      </m:math> at time <m:math><m:ci>n</m:ci></m:math>, we are able to 
+      closely approximate 
+      <m:math>  
+	<m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mi>x</m:mi>
+	      <m:mi>c</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:plus/>
+	      <m:ci>n</m:ci>
+	      <m:apply>
+		<m:divide/>
+		<m:apply>
+		  <m:plus/>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>p</m:ci>
+		    <m:ci>d</m:ci>
+		  </m:apply>
+		  <m:ci>α</m:ci>
+		</m:apply>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:ci>T</m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+      for any 
+      <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:ci>α</m:ci>
+	  <m:interval closure="closed-open">
+	    <m:cn>0</m:cn>
+	    <m:cn>1</m:cn>
+	  </m:interval>
+	</m:apply>
+      </m:math>. We would like to 
+      approximate 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">y</m:ci>
+	    <m:ci>m</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>x</m:mi>
+		<m:mi>c</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>m</m:ci>
+		<m:apply>
+		  <m:divide/>
+		  <m:ci>T</m:ci>
+		  <m:ci>Q</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:ci>d</m:ci>
+		<m:apply>
+		  <m:divide/>
+		  <m:ci>T</m:ci>
+		  <m:ci>L</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math> in this manner - note the inclusion of the master
+      filter delay.  So, for a particular
+      <m:math><m:ci>m</m:ci></m:math>,
+      <m:math><m:ci>Q</m:ci></m:math>,
+      <m:math><m:ci>d</m:ci></m:math>, and
+      <m:math><m:ci>L</m:ci></m:math>, we would like to find
+      <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:ci>n</m:ci>
+	  <m:integers/>
+	</m:apply>
+      </m:math>, 
+      <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:ci>p</m:ci>
+	  <m:set>
+	    <m:cn>0</m:cn>
+	    <m:ci>…</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci>L</m:ci>
+	      <m:cn>1</m:cn>
+	    </m:apply>
+	  </m:set>
+	</m:apply>
+      </m:math>, and 
+      <m:math>
+	<m:apply>
+	  <m:in/><m:ci>α</m:ci>
+	  <m:interval closure="closed-open">
+	    <m:cn>0</m:cn>
+	    <m:cn>1</m:cn>
+	  </m:interval>
+	</m:apply>
+      </m:math> such that
+
+      <equation id="eq6">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:plus/>
+		<m:ci>n</m:ci>
+		<m:apply>
+		  <m:divide/>
+		  <m:apply>
+		    <m:plus/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>p</m:ci>
+		      <m:ci>d</m:ci>
+		    </m:apply>
+		    <m:ci>α</m:ci>
+		  </m:apply>
+		  <m:ci>L</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:ci>T</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:minus/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>m</m:ci>
+		<m:apply>
+		  <m:divide/>
+		  <m:ci>T</m:ci>
+		  <m:ci>Q</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:ci>d</m:ci>
+		<m:apply>
+		  <m:divide/>
+		  <m:ci>T</m:ci>
+		  <m:ci>L</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+
+      <equation id="equ6">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>n</m:ci>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	      <m:ci>p</m:ci>
+	      <m:ci>α</m:ci>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>m</m:ci>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	      <m:ci>Q</m:ci>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:divide/>
+		<m:ci>m</m:ci>
+		<m:ci>Q</m:ci>
+	      </m:apply>
+	      <m:ci>L</m:ci>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:floor/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>m</m:ci>
+		    <m:ci>Q</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:rem/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>m</m:ci>
+		    <m:ci>Q</m:ci>
+		  </m:apply>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:apply>
+	      <m:ci>L</m:ci>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:floor/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>m</m:ci>
+		    <m:ci>Q</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:floor/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:rem/>
+		    <m:apply>
+		      <m:divide/>
+		      <m:ci>m</m:ci>
+		      <m:ci>Q</m:ci>
+		    </m:apply>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		  <m:ci>L</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:rem/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:rem/>
+		    <m:apply>
+		      <m:divide/>
+		      <m:ci>m</m:ci>
+		      <m:ci>Q</m:ci>
+		    </m:apply>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		  <m:ci>L</m:ci>
+		</m:apply>
+		<m:cn>1</m:cn>
+	      </m:apply>
+	      <!-- <m:ci>
+	      <m:msub>
+	      <m:mfenced open='&lang;' close='&rang;'>
+	      <m:apply>
+	      <m:times/>
+	      <m:ci>
+	      <m:msub>
+              <m:mfenced open='&lang;' close='&rang;'>
+	      <m:mfrac>
+	      <m:mi>m</m:mi>
+	      <m:mi>Q</m:mi>
+	    </m:mfrac>
+	    </m:mfenced>
+              <m:mn>1</m:mn>
+            </m:msub>
+	    </m:ci>
+	      <m:mi>L</m:mi>
+	    </m:apply>
+	    </m:mfenced>
+	      <m:mn>1</m:mn>
+	    </m:msub>
+	    </m:ci> -->
+	    </m:apply>
+
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:floor/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>m</m:ci>
+		    <m:ci>Q</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:ci>L</m:ci>
+	      </m:apply>
+
+	      <m:apply>
+		<m:floor/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:rem/>
+		    <m:apply>
+		      <m:divide/>
+		      <m:ci>m</m:ci>
+		      <m:ci>Q</m:ci>
+		    </m:apply>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		  <m:ci>L</m:ci>
+		</m:apply>
+	      </m:apply>
+
+	      <m:apply>
+		<m:rem/>
+		<m:apply>
+		  <m:divide/>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>m</m:ci>
+		    <m:ci>L</m:ci>
+		  </m:apply>
+		  <m:ci>Q</m:ci>
+		</m:apply>
+		<m:cn>1</m:cn>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+
+      where <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:floor/>
+	      <m:apply>
+		<m:divide/>
+		<m:ci>m</m:ci>
+		<m:ci>Q</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:ci>L</m:ci>
+	  </m:apply>
+	  <m:integers/>
+	</m:apply>
+      </m:math>, <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:apply>
+	    <m:floor/>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:rem/>
+		<m:apply>
+		  <m:divide/>
+		  <m:ci>m</m:ci>
+		  <m:ci>Q</m:ci>
+		</m:apply>
+		<m:cn>1</m:cn>
+	      </m:apply>
+	      <m:ci>L</m:ci>
+	    </m:apply>
+	  </m:apply>
+	  <m:set>
+	    <m:cn>0</m:cn>
+	    <m:ci>…</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci>L</m:ci>
+	      <m:cn>1</m:cn>
+	    </m:apply>
+	  </m:set>
+	</m:apply>
+      </m:math>, <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:apply>
+	    <m:rem/>
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>m</m:ci>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	      <m:ci>Q</m:ci>
+	    </m:apply>
+	    <m:cn>1</m:cn>
+	  </m:apply>
+	  <m:interval closure="closed-open">
+	    <m:cn>0</m:cn>
+	    <m:cn>1</m:cn>
+	  </m:interval>
+	</m:apply>
+      </m:math>.
+    </para>
+
+
+    <para id="idssuck">
+      Thus, we have found suitable <m:math><m:ci>n</m:ci></m:math>,
+      <m:math><m:ci>p</m:ci></m:math>, and
+      <m:math><m:ci>α</m:ci></m:math>.  Making clear the
+      dependence on output time index <m:math><m:ci>m</m:ci></m:math>,
+      we write
+
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>n</m:mi>
+	      <m:mi>m</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:apply>
+	    <m:floor/>
+	    <m:apply>
+	      <m:divide/>
+	      <m:ci>m</m:ci>
+	      <m:ci>Q</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>p</m:mi>
+	      <m:mi>m</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:rem/>
+	      <m:apply>
+		<m:divide/>
+		<m:ci>m</m:ci>
+		<m:ci>Q</m:ci>
+	      </m:apply>
+	      <m:cn>1</m:cn>
+	    </m:apply>
+	    <m:ci>L</m:ci>
+	  </m:apply>
+	</m:apply>
+
+      </m:math>
+
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>α</m:mi>
+	      <m:mi>m</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:apply>
+	    <m:rem/>
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>m</m:ci>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	      <m:mi>Q</m:mi>
+	    </m:apply>
+	    <m:cn>1</m:cn>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+
+      and generate output 
+      <m:math>
+	<m:apply>
+	  <m:approx/>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">y</m:ci>
+	    <m:ci>m</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>x</m:mi>
+		<m:mi>c</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>m</m:ci>
+		<m:apply>
+		  <m:divide/>
+		  <m:ci>T</m:ci>
+		  <m:ci>Q</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:ci>d</m:ci>
+		<m:apply>
+		  <m:divide/>
+		  <m:ci>T</m:ci>
+		  <m:ci>L</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+
+      via
+
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">y</m:ci>
+	    <m:ci>m</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:plus/>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:minus/>
+		<m:cn>1</m:cn>
+		<m:ci><m:msub><m:mi>α</m:mi><m:mi>m</m:mi></m:msub></m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>k</m:ci></m:bvar>
+		<m:domainofapplication>
+		  <m:ci>k</m:ci>
+		</m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">
+		      <m:msub>
+			<m:mi>h</m:mi>
+			<m:msub>
+			  <m:mi>p</m:mi>
+			  <m:mi>m</m:mi>
+			</m:msub>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>k</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">x</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>n</m:mi>
+			  <m:mi>m</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>k</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:ci><m:msub><m:mi>α</m:mi><m:mi>m</m:mi></m:msub></m:ci>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>k</m:ci></m:bvar>
+		<m:domainofapplication>
+		  <m:ci>k</m:ci>
+		</m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">
+		      <m:msub>
+			<m:mi>h</m:mi>
+			<m:mrow>
+			  <m:msub>
+			    <m:mi>p</m:mi>
+			    <m:mi>m</m:mi>
+			  </m:msub>
+			  <m:mo>+</m:mo>
+			  <m:mn>1</m:mn>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>k</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">x</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>n</m:mi>
+			  <m:mi>m</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>k</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+
+      The arbitrary rate polyphase resampling structure is summarized 
+      in <link target-id="fig1" strength="3"/>.
+    </para>
+
+    <figure id="fig1">
+      <media id="idp9321552" alt=""><image src="../../media/m10456fig2.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para5">
+      Note that our structure refers to polyphase filters 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mi>H</m:mi>
+	      <m:msub>
+		<m:mi>p</m:mi>
+		<m:mi>m</m:mi>
+	      </m:msub>
+	    </m:msub>
+	  </m:ci>
+	  <m:ci>z</m:ci>
+	</m:apply>
+      </m:math>
+      and 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mi>H</m:mi>
+	      <m:mrow>
+		<m:msub>
+		  <m:mi>p</m:mi>
+		  <m:mi>m</m:mi>
+		</m:msub>
+		<m:mo>+</m:mo>
+		<m:mn>1</m:mn>
+	      </m:mrow>
+	    </m:msub>
+	  </m:ci>
+	  <m:ci>z</m:ci>
+	</m:apply>
+      </m:math>
+      for 
+      <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>p</m:mi>
+	      <m:mi>m</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:set>
+	    <m:cn>0</m:cn>
+	    <m:ci>…</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci>L</m:ci>
+	      <m:cn>1</m:cn>
+	    </m:apply>
+	  </m:set>
+	</m:apply>
+      </m:math>.
+
+      This specifies the standard polyphase bank 
+      <m:math>
+	<m:set>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	  <m:ci>…</m:ci>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mrow>
+		  <m:mi>L</m:mi>
+		  <m:mo>-</m:mo>
+		  <m:mn>1</m:mn>
+		</m:mrow>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:set>
+      </m:math>
+      plus the additional filter 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mi>H</m:mi>
+	      <m:mi>L</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:ci>z</m:ci>
+	</m:apply>
+      </m:math>.
+      
+      Ideally the 
+      <m:math><m:ci><m:msup><m:mi>p</m:mi><m:mo>th</m:mo></m:msup>
+	</m:ci></m:math>
+      filter has group delay 
+      <m:math>
+	<m:apply>
+	  <m:divide/>
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci>d</m:ci>
+	    <m:ci>p</m:ci>
+	  </m:apply>
+	  <m:ci>L</m:ci>
+	</m:apply>
+      </m:math>, 
+      so that
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mi>H</m:mi>
+	      <m:mi>L</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:ci>z</m:ci>
+	</m:apply>
+      </m:math> should advance the input one full sample relative to 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mi>H</m:mi>
+	      <m:mn>0</m:mn>
+	    </m:msub>
+	  </m:ci>
+	  <m:ci>z</m:ci>
+	</m:apply>
+      </m:math>, <foreign>i.e.</foreign>, 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mi>L</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:times/>
+	    <m:ci>z</m:ci>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>H</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>.
+      There are a number of ways to design/implement the additional filter.
+
+      <list id="list1" list-type="enumerated">
+	<item>
+	  Design a master filter of length 
+	  <m:math>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>L</m:ci>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>N</m:mi>
+		    <m:mi>p</m:mi>
+		  </m:msub>
+		</m:ci>
+	      </m:apply>
+	      <m:cn>1</m:cn>
+	    </m:apply>
+	  </m:math>
+	  (where <m:math>      <m:ci>
+	      <m:msub>
+		<m:mi>N</m:mi>
+		<m:mi>p</m:mi>
+	      </m:msub>
+	    </m:ci></m:math>
+	  is the polyphase filter length), and then construct
+
+	  <m:math display="block">
+	    <m:apply>
+	      <m:forall/>
+	      <m:bvar><m:ci>p</m:ci></m:bvar>
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">
+		    <m:msub>
+		      <m:mi>h</m:mi>
+		      <m:mi>p</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>k</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">h</m:ci>
+		  <m:apply>
+		    <m:plus/>
+		    <m:apply>
+		      <m:times/>
+		      <m:ci>k</m:ci>
+		      <m:ci>L</m:ci>
+		    </m:apply>
+		    <m:ci>p</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:condition>
+		<m:apply>
+		  <m:in/>
+		  <m:ci>p</m:ci>
+		  <m:set>
+		    <m:cn>0</m:cn>
+		    <m:ci>…</m:ci>
+		    <m:ci>L</m:ci>
+		  </m:set>
+		</m:apply>
+	      </m:condition>
+	    </m:apply>
+	  </m:math>
+
+	  Note that 
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">
+		  <m:msub>
+		    <m:mi>h</m:mi>
+		    <m:mi>L</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>k</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">
+		  <m:msub>
+		    <m:mi>h</m:mi>
+		    <m:mn>0</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:plus/>
+		  <m:ci>k</m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	  for
+	  <m:math>
+	    <m:apply>
+	      <m:leq/>
+	      <m:cn>0</m:cn>
+	      <m:apply>
+		<m:leq/>
+		<m:ci>k</m:ci>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>N</m:mi>
+		      <m:mi>p</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>.
+	</item>
+
+	<item>
+	  Set 
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>H</m:mi>
+		    <m:mi>L</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>H</m:mi>
+		    <m:mn>0</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	  and advance the input stream 
+	  to the last filter by one sample (relative to the other filters).
+	</item>
+
+      </list>
+
+      In certain applications the rate of resampling needs to be
+      adjusted on-the-fly.  The arbitrary rate resampler easily
+      facilitates this requirement by replacing
+      <m:math><m:ci>Q</m:ci></m:math> with
+      <m:math><m:ci><m:msub><m:mi>Q</m:mi><m:mi>m</m:mi></m:msub></m:ci></m:math>
+      in the definitions for
+      <m:math><m:ci><m:msub><m:mi>n</m:mi><m:mi>m</m:mi></m:msub></m:ci></m:math>,
+      <m:math><m:ci><m:msub><m:mi>p</m:mi><m:mi>m</m:mi></m:msub></m:ci></m:math>,
+      and
+      <m:math><m:ci><m:msub><m:mi>α</m:mi><m:mi>m</m:mi></m:msub></m:ci></m:math>.
+    </para>
+
+    <para id="para7">
+      Finally, it should be mentioned that a more sophisticated
+      interpolation could be used,<foreign> e.g.</foreign>, Lagrange
+      interpolation involving more than two branch outputs.  By making
+      the interpolation more accurate, fewer polyphase filters would
+      be necessary for the same overall performance, reducing the
+      storage requirements for polyphase filter taps.  On the other
+      hand, combining the outputs of more branches requires more
+      computations per output point.  Essentially, the different
+      schemes tradeoff between storage and computation.
+    </para>
+
+  </content>
+</document>

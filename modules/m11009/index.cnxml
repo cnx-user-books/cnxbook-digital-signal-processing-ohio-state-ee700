@@ -1,0 +1,52 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Computational Savings of Polyphase Resampling</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>8444b51e-27d0-4c59-a8d9-a4475305a92e</md:uuid>
+</metadata>
+
+
+
+  <content>
+ 
+ <section id="sec2">
+      <title>Computational Savings of Polyphase Resampling</title>
+
+<para id="para2.1"> Recall the standard (non-polyphase) resampler in <link target-id="fig4" strength="3"/>.</para>
+
+      <figure id="fig4">
+	<media id="idm1270208" alt=""><image src="../../media/m10443fig4.png" mime-type="image/png"/></media>
+      </figure>
+
+
+      <para id="para2.2">
+For simplicity, assume that <m:math><m:apply><m:gt/><m:ci>L</m:ci><m:ci>M</m:ci>
+</m:apply></m:math>. Since the length of an FIR filter is inversely proportional 
+to the transition bandwidth (recalling Kaiser's formula), and the transition 
+bandwidth is directionally proportional to the cutoff frequency, we model the 
+lowpass filter length as <m:math><m:apply><m:eq/><m:ci>N</m:ci><m:apply><m:times/>
+<m:ci>α</m:ci><m:ci>L</m:ci></m:apply></m:apply></m:math>, where <m:math>
+<m:ci>α</m:ci></m:math> is a constant that determines the filter's (and 
+thus the resampler's) performance (independent of <m:math><m:ci>L</m:ci></m:math> 
+and <m:math><m:ci>M</m:ci></m:math>). To compute one output point, we require 
+<m:math><m:ci>M</m:ci></m:math> filter outputs, each requiring <m:math><m:apply>
+<m:eq/><m:ci>N</m:ci><m:apply><m:times/><m:ci>α</m:ci><m:ci>L</m:ci>
+</m:apply></m:apply></m:math> multiplies, giving a total of <m:math><m:apply>
+<m:times/><m:ci>α</m:ci><m:ci>L</m:ci><m:ci>M</m:ci></m:apply></m:math> 
+multiplies per output.
+      </para>
+
+      <para id="para2.3">
+In the polyphase implementation, calculation of one output point requires the 
+computation of only one polyphase filter output. With <m:math><m:apply><m:eq/>
+<m:ci>N</m:ci><m:apply><m:times/><m:ci>α</m:ci><m:ci>L</m:ci></m:apply>
+</m:apply></m:math> master filter taps and <m:math><m:ci>L</m:ci></m:math> 
+branches, the polyphase filter length is <m:math><m:ci>α</m:ci></m:math>,
+so that only <m:math><m:ci>α</m:ci></m:math> multiplies are required per 
+output. Thus, the polyphase implementation saves a factor of <m:math><m:apply>
+<m:times/><m:ci>L</m:ci><m:ci>M</m:ci></m:apply></m:math> multiplies over the 
+standard implementation!
+      </para>
+
+    </section>
+  </content>
+  
+</document>

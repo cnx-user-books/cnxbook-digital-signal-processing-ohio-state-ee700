@@ -1,0 +1,90 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml" xmlns:bib="http://bibtexml.sf.net/">
+  
+  <title>Drawbacks of Classical Filterbank Designs</title>
+
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>ece97aa7-b87d-42bd-892a-06b12785b0a1</md:uuid>
+</metadata>
+
+  <content>
+    <para id="p1">
+      To begin with, the reference to "classical" filterbank
+      designs, generally refers to the filterbank types that you
+      should have seen up to now.  These include the following types,
+      that can be reviewed if necessary:
+
+      <list id="list1">
+	<item>
+	  <link document="m10929" strength="3">Uniform Modulated
+	  Filterbanks</link> 
+	</item>
+	<item>
+	  <link document="m10424" strength="3">Polyphase/DFT
+	  Implementation of Uniform Modulated Filterbanks</link> 
+	</item>
+      </list>
+
+    </para>
+
+    <section id="sec1">
+      <title>Drawbacks to Classical Implementation</title>
+      <para id="p2">
+	The classical filterbanks that we have considered so far
+	(those listed above) give perfect reconstruction performance
+	only when the analysis and synthesis filters are ideal.  With
+	non-ideal (<foreign>i.e.</foreign>, implementable) filters,
+	aliasing will result from the downsampling/upsampling
+	operation and corrupt the output signal.  Since aliasing
+	distortion is inherently non-linear, it may be very
+	undesirable in certain applications.  Thus, long
+	analysis/synthesis filters might be required to force aliasing
+	distortion down to tolerable levels.  The cost of long filters
+	is somewhat offset by the efficient polyphase implementation,
+	though.
+      </para>
+
+      <para id="p3">
+	That said, clever fliter designs have been proposed which
+	prevent aliasing in <emphasis>neighboring</emphasis>
+	sub-bands.  These designs include the following references:
+	<cite target-id="rothweiler"><cite-title>Rothweiler</cite-title></cite>, <cite target-id="crochandrab"><cite-title>Crochiere and Rabiner</cite-title></cite>, and <cite target-id="vaidyanathan"><cite-title>Vaidyanathan</cite-title></cite>.  As
+	neighboring-subband aliasing typically constitutes the bulk of
+	aliasing distortion, these designs give significant
+	performance gains.  In fact, such filter designs are used in
+	MPEG high-performance audio compression standards.
+      </para>
+
+    </section>
+
+  </content>
+
+  <bib:file>
+    <bib:entry id="rothweiler">
+      <bib:book>
+	<bib:author>J.H. Rothweiler</bib:author>
+	<bib:title>Polyphase quadrature filters - A new
+	  subband coding technique</bib:title>
+	<bib:publisher/>
+	<bib:year>1983</bib:year>
+      </bib:book>
+    </bib:entry>
+
+    <bib:entry id="crochandrab">
+      <bib:book>
+	<bib:author>R.E Crochiere and L.R. Rabiner</bib:author>
+	<bib:title>Multirate Digital Signal Processing</bib:title>
+	<bib:publisher/>
+	<bib:year>1983</bib:year>
+      </bib:book>
+    </bib:entry>
+
+    <bib:entry id="vaidyanathan">
+      <bib:book>
+	<bib:author>P.P. Vaidyanathan</bib:author>
+	<bib:title>Multirate Systems and Filter Banks</bib:title>
+	<bib:publisher/>
+	<bib:year>1993</bib:year>
+      </bib:book>
+    </bib:entry>
+  </bib:file>
+
+</document>

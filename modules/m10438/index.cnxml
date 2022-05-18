@@ -1,0 +1,744 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+
+  <title>A Group-Delay Interpretation of Polyphase Filters</title>
+
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>d073d0b8-159a-4a63-b7b0-8fd856b37cd5</md:uuid>
+</metadata>
+
+  <content>
+    <para id="para1">
+      Previously, <link document="m10431" strength="3">polyphase
+	interpolation</link> and <link document="m10433" strength="3">decimation</link> were derived from the Noble
+	identities and motivated for reasons of computational
+	efficiency. Here we present a different interpretation of the
+	(ideal) polyphase filter.
+    </para>
+
+    <para id="para1.1">
+      Assume that <m:math><m:apply><m:ci type="fn">H</m:ci><m:ci>z</m:ci> </m:apply></m:math> is an ideal
+      lowpass filter with gain <m:math><m:ci> L</m:ci></m:math>,
+      cutoff <m:math><m:apply><m:divide/><m:pi/><m:ci>
+      L</m:ci></m:apply></m:math>, and constant group delay of
+      <m:math> <m:ci>d</m:ci></m:math>:
+
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci>
+	    <m:apply>
+	      <m:exp/>
+	      <m:apply>
+		<m:times/>
+		<m:imaginaryi/>
+		<m:ci>ω</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	  <m:piecewise>
+	    <m:piece>
+	      <m:apply>
+		<m:times/>
+		<m:ci>L</m:ci>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:minus/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>d</m:ci>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+
+	      <m:apply>
+		<m:in/>
+		<m:ci>ω</m:ci>
+		<m:interval closure="closed-open">
+		  <m:apply>
+		    <m:minus/>
+		    <m:apply>
+		      <m:divide/>
+		      <m:pi/>
+		      <m:ci>L</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:divide/>
+		    <m:pi/>
+		    <m:ci>L</m:ci>
+		  </m:apply>
+		</m:interval>   
+	      </m:apply>
+	    </m:piece>
+
+	    <m:piece>
+	      <m:cn>0</m:cn>
+	      <m:apply>
+		<m:in/>
+		<m:ci>ω</m:ci>
+		<m:apply>
+		  <m:and/>
+		  <m:interval closure="closed-open">
+		    <m:apply>
+		      <m:minus/>
+		      <m:pi/>
+		    </m:apply>
+		    <m:apply>
+		      <m:minus/>
+		      <m:apply>
+			<m:divide/>
+			<m:pi/>
+			<m:ci>L</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:interval>
+		  <m:interval closure="closed-open">
+		    <m:apply>
+		      <m:divide/>
+		      <m:pi/>
+		      <m:ci>L</m:ci>
+		    </m:apply>
+		    <m:pi/>
+		  </m:interval>    
+		</m:apply>
+	      </m:apply>
+	    </m:piece>
+	  </m:piecewise>
+	</m:apply>
+      </m:math>
+    </para>
+
+    <para id="para1.2">
+      Recall that the polyphase filters are defined as
+
+      <m:math display="block">
+	<m:apply>
+	  <m:forall/>
+	  <m:bvar><m:ci>p</m:ci></m:bvar>
+	  <m:condition>
+	    <m:apply>
+	      <m:in/>
+	      <m:ci>p</m:ci>
+	      <m:set>
+		<m:cn>0</m:cn>
+		<m:ci>…</m:ci>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>L</m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:set>
+	    </m:apply>
+	  </m:condition>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mi>p</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>k</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">h</m:ci>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:times/>
+		  <m:ci>k</m:ci>
+		  <m:ci>L</m:ci>
+		</m:apply>
+		<m:ci>p</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+
+    </para>
+
+    <para id="para1.3">
+      In other words, 
+      <m:math>    
+	<m:apply>
+	  <m:ci type="fn" class="discrete">
+	    <m:msub>
+	      <m:mi>h</m:mi>
+	      <m:mi>p</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:ci>k</m:ci>
+	</m:apply>
+      </m:math> is an advanced 
+      (by <m:math><m:ci>p</m:ci></m:math> samples)
+      and downsampled (by factor <m:math><m:ci>L</m:ci></m:math>)
+      version of 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn" class="discrete">h</m:ci>
+	  <m:ci>n</m:ci>
+	</m:apply>
+      </m:math> (see <link target-id="fig1" strength="3"/>).
+    </para>
+
+    <figure id="fig1">
+      <media id="idm570000" alt=""><image src="../../media/m10438fig1.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para1.4">
+      The DTFT of the
+      <m:math><m:ci><m:msup><m:mi>p</m:mi><m:mi>th</m:mi>
+	  </m:msup></m:ci></m:math> polyphase filter impulse response
+	  is then
+
+      <equation id="eq1">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>H</m:mi>
+		  <m:mi>p</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:divide/>
+		<m:cn>1</m:cn>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>l</m:ci></m:bvar>
+		<m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>L</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>
+		<m:apply>
+		  <m:ci type="fn">V</m:ci>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:exp/>
+		      <m:apply>
+			<m:times/>
+			<m:apply>
+			  <m:minus/>
+			  <m:imaginaryi/>
+			</m:apply>
+			<m:apply>
+			  <m:divide/>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+			  </m:apply>
+			  <m:ci>L</m:ci>
+			</m:apply>
+			<m:ci>l</m:ci>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:power/>
+		      <m:ci>z</m:ci>
+		      <m:apply>
+			<m:divide/>
+			<m:cn>1</m:cn>
+			<m:ci>L</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+
+      where 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn">V</m:ci><m:ci>z</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:ci type="fn">H</m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>z</m:ci>
+	      <m:ci>p</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+
+      <equation id="eq1.2">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>H</m:mi>
+		  <m:mi>p</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:divide/>
+		<m:cn>1</m:cn>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>l</m:ci></m:bvar>
+		<m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>L</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>            
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:minus/>
+			<m:imaginaryi/>
+		      </m:apply>
+		      <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:times/>
+			  <m:cn>2</m:cn>
+			  <m:pi/>
+			</m:apply>
+			<m:ci>L</m:ci>
+		      </m:apply>
+		      <m:ci>l</m:ci>
+		      <m:ci>p</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+		    <m:apply>
+		      <m:divide/>
+		      <m:ci>p</m:ci>
+		      <m:ci>L</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">H</m:ci>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:exp/>
+			<m:apply>
+			  <m:times/>
+			  <m:apply>
+			    <m:minus/>
+			    <m:imaginaryi/>
+			  </m:apply>
+			  <m:apply>
+			    <m:divide/>
+			    <m:apply>
+			      <m:times/>
+			      <m:cn>2</m:cn>
+			      <m:pi/>
+			    </m:apply>
+			    <m:ci>L</m:ci>
+			  </m:apply>
+			  <m:ci>l</m:ci>
+			</m:apply>
+		      </m:apply>
+		      <m:apply>
+			<m:power/>
+			<m:ci>z</m:ci>
+			<m:apply>
+			  <m:divide/>
+			  <m:cn>1</m:cn>
+			  <m:ci>L</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+      
+      <equation id="eq4">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>H</m:mi>
+		  <m:mi>p</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:ci>ω</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:divide/>
+		<m:cn>1</m:cn>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>l</m:ci></m:bvar>
+		<m:lowlimit><m:ci>0</m:ci></m:lowlimit>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>L</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>            
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+			<m:imaginaryi/>
+		      <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>ω</m:ci>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+			    <m:ci>l</m:ci>
+			  </m:apply>
+			</m:apply>
+			<m:ci>L</m:ci>
+		      </m:apply>
+		      <m:ci>p</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">H</m:ci>
+		    <m:apply>
+		      <m:exp/>
+		      <m:apply>
+			<m:times/>
+			<m:imaginaryi/>
+			<m:apply>
+			  <m:divide/>
+			  <m:apply>
+			    <m:minus/>
+			    <m:ci>ω</m:ci>
+			    <m:apply>
+			      <m:times/>
+			      <m:cn>2</m:cn>
+			      <m:pi/>
+			      <m:ci>l</m:ci>
+			    </m:apply>
+			  </m:apply>
+			  <m:ci>L</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:forall/>
+	      <m:bvar><m:ci>ω</m:ci></m:bvar>
+	      <m:condition>
+		<m:apply>
+		  <m:leq/>
+		  <m:apply>
+		    <m:abs/>
+		    <m:ci>ω</m:ci>
+		  </m:apply>
+		  <m:pi/>
+		</m:apply>
+	      </m:condition>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:divide/>
+		  <m:cn>1</m:cn>
+		  <m:ci>L</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:apply>
+			<m:divide/>
+			<m:ci>ω</m:ci>
+			<m:ci>L</m:ci>
+		      </m:apply>
+		      <m:ci>p</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">H</m:ci>
+		    <m:apply>
+		      <m:exp/>
+		      <m:apply>
+			<m:times/>
+			<m:imaginaryi/>
+			<m:apply>
+			  <m:divide/>
+			  <m:ci>ω</m:ci>
+			  <m:ci>L</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:forall/>
+	      <m:bvar><m:ci>ω</m:ci></m:bvar>
+	      <m:condition>
+		<m:apply>
+		  <m:leq/>
+		  <m:apply>
+		    <m:abs/>
+		    <m:ci>ω</m:ci>
+		  </m:apply>
+		  <m:pi/>
+		</m:apply>
+	      </m:condition>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+                  <m:apply>
+		    <m:minus/>
+		    <m:imaginaryi/>
+                  </m:apply>
+		  <m:apply>
+		    <m:divide/>
+                    <m:apply>
+		      <m:minus/>
+                      <m:ci>d</m:ci>
+                      <m:ci>p</m:ci>
+                    </m:apply>
+		    <m:ci>L</m:ci>
+		  </m:apply>
+		  <m:ci>ω</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+    </para>     
+
+    <para id="para2">
+      Thus, the ideal
+<m:math><m:ci><m:msup><m:mi>p</m:mi><m:mi>th</m:mi></m:msup></m:ci></m:math>
+      polyphase filter has a constant magnitude response of one and a
+      constant group delay of
+      <m:math>
+	<m:apply>
+	  <m:divide/>
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci>d</m:ci>
+	    <m:ci>p</m:ci>
+	  </m:apply>
+	  <m:ci>L</m:ci>
+	</m:apply>
+      </m:math> samples. The implication is that if the input to the
+      <m:math><m:ci><m:msup><m:mi>p</m:mi><m:mi>th</m:mi></m:msup></m:ci></m:math>
+      polyphase filter is the unaliased
+      <m:math><m:ci>T</m:ci></m:math>-sampled representation
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">x</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>x</m:mi>
+		<m:mi>c</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:times/>
+	      <m:ci>n</m:ci>
+	      <m:ci>T</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>, then the output of the filter would be the unaliased
+      <m:math><m:ci>T</m:ci> </m:math>-sampled representation
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">
+	      <m:msub>
+		<m:mi>y</m:mi>
+		<m:mi>p</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>x</m:mi>
+		<m:mi>c</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>n</m:ci>
+		<m:apply>
+		  <m:divide/>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>d</m:ci>
+		    <m:ci>p</m:ci>
+		  </m:apply>
+		  <m:ci>L</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:ci>T</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math> (see <link target-id="fig4" strength="3"/>).
+    </para> 
+
+    <figure id="fig4">
+     <media id="idm811328" alt=""><image src="../../media/m10438fig2.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para4">
+      <link target-id="fig5" strength="3"/> shows the role of polyphase
+      interpolation filters assume zero-delay
+      (<m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:ci>d</m:ci>
+	  <m:cn>0</m:cn>
+	</m:apply>
+      </m:math>) processing. Essentially, the
+      <m:math><m:ci><m:msup><m:mi>p</m:mi><m:mi>th</m:mi></m:msup></m:ci></m:math>
+      filter interpolates the waveform
+      <m:math>
+	<m:apply>
+	  <m:divide/>
+	  <m:ci>p</m:ci>
+	  <m:ci>L</m:ci>
+	</m:apply>
+      </m:math>-way
+      between consecutive input samples. The
+      <m:math><m:ci>L</m:ci></m:math> polyphase outputs are then
+      interleaved to create the output stream. Assuming that
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">
+	    <m:msub>
+	      <m:mi>x</m:mi>
+	      <m:mi>c</m:mi>
+	    </m:msub></m:ci>
+	  <m:ci>t</m:ci>
+	</m:apply>
+      </m:math>
+      is bandlimited to
+      <m:math>
+	<m:apply>
+	  <m:times/>
+	  <m:apply>
+	    <m:divide/>
+	    <m:cn>1</m:cn>
+	    <m:apply>
+	      <m:times/>
+	      <m:cn>2</m:cn>
+	      <m:ci>T</m:ci>
+	    </m:apply>
+	  </m:apply>
+	  <m:ci>Hz</m:ci>
+	</m:apply>
+      </m:math>, perfect polyphase filtering yields a perfectly
+      interpolated output.  In practice, we use the casual FIR
+      approximations of the polyphase filters 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn" class="discrete"><m:msub>
+	      <m:mi>h</m:mi>
+	      <m:mi>p</m:mi>
+	    </m:msub></m:ci>
+	  <m:ci>k</m:ci>
+	</m:apply>
+      </m:math> (which which correspond to some casual FIR
+      approximation of the master filter 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn" class="discrete">h</m:ci>
+	  <m:ci>n</m:ci>
+	</m:apply>
+      </m:math>).
+    </para>
+
+    <figure id="fig5">
+     <media id="idm9428752" alt=""><image src="../../media/m10438fig3.png" mime-type="image/png"/></media>
+    </figure>
+
+  </content>
+</document>

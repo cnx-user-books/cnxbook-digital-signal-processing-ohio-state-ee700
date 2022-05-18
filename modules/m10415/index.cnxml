@@ -1,0 +1,123 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml" xmlns:bib="http://bibtexml.sf.net/">
+  
+  <title>Filterbanks with &gt;2 Branches</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>6a154622-da2c-4af4-8b51-d2446f0f586c</md:uuid>
+</metadata>
+
+  
+  <content>
+    <section id="sec1">
+      <title>Filterbanks with &gt;2 Branches</title>
+      <para id="p0">
+	Thus far the previous discussion on filterbanks has
+	concentrated on "modern" filterbanks with only two branches.
+	There are two standard ways by which the number of branches
+	can be increased.
+      </para>   
+      
+      <section id="sub1">
+	<title>M-Band Filterbanks</title>
+	<para id="sub1_p1">
+	  The ideas used to construct two-branch <link document="m10412" strength="3">PR-FIR filterbanks</link> can
+	  be directly extended to the
+	  <m:math><m:ci>M</m:ci></m:math>-branch case. (See <cite target-id="vaidyanathan"><cite-title>Vaidyanathan</cite-title></cite> and <cite target-id="mitra"><cite-title>Mitra</cite-title></cite>) This yields, for example, a
+	  polynomial matrix
+	  <m:math>
+	    <m:apply>
+	      <m:ci type="fn">H</m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	  </m:math> with <m:math><m:ci>M</m:ci></m:math> rows and
+	  <m:math><m:ci>M</m:ci></m:math> columns.  For these
+	  <m:math><m:ci>M</m:ci></m:math>-band filterbanks, the
+	  sub-bands will have uniform widths
+	  <m:math>
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:pi/>
+	      </m:apply>
+	      <m:ci>L</m:ci>
+	    </m:apply>
+	  </m:math> radians (in the ideal case) <link target-id="fig1" strength="3"/>.
+	</para>
+	
+	<figure id="fig1">
+	  <media id="idm893056" alt=""><image src="../../media/brn_f1.png" mime-type="image/png"/></media>
+	  <caption>
+	   <m:math><m:ci>M</m:ci></m:math>-band Filterbank
+	  </caption>
+	</figure>
+      
+      </section>
+      
+      <section id="sub2">
+	<title>Multi-Level (Cascade) Filterbanks</title>
+	<para id="sub2_p1">
+	  The two-branch PR-FIR filterbanks can be cascaded to yield
+	  PR-FIR filterbanks whose sub-band widths equal 
+	  <m:math>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:power/>
+		<m:cn>2</m:cn>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>k</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:pi/>
+	    </m:apply>
+	  </m:math> for non-negative integers
+	  <m:math><m:ci>k</m:ci></m:math> (in the ideal case).  If the
+	  magnitude responses of the filters are not well behaved,
+	  however, the cascading will result in poor effective
+	  frequency-selectivity.  <link target-id="fig2" strength="3">Below</link> we show a filterbank in which the
+	  low-frequency sub-bands are narrower than the high-frequency
+	  sub-band.  Note that the number of input samples equals the
+	  total number of sub-band samples.
+	</para>
+	
+	<figure id="fig2">
+	  <media id="idm9357280" alt=""><image src="../../media/brn_f2.png" mime-type="image/png"/></media>
+	  <caption>
+	    Multi-level (Cascaded) Filterbank
+	  </caption>
+	</figure>
+	
+	<para id="final">
+	  We shall see these structures in the context of the discrete
+	  wavelet transform.
+	</para>
+      </section>      
+      
+    </section>
+  </content>
+
+  <bib:file>
+    <bib:entry id="vaidyanathan">
+      <bib:book>
+	<bib:author>P.P. Vaidyanathan</bib:author>
+	<bib:title>Multirate Systems and Filterbanks</bib:title>
+	<bib:publisher>Prentice Hall</bib:publisher>
+	<bib:year>1993</bib:year>
+	<bib:address>Englewood Cliffs, NJ</bib:address>
+      </bib:book>
+    </bib:entry>
+
+    <bib:entry id="mitra">
+      <bib:book>
+	<bib:author>S.K. Mitra</bib:author>
+	<bib:title>Digital Signal Processing</bib:title>
+	<bib:publisher>McGraw-Hill</bib:publisher>
+	<bib:year>2001</bib:year>
+	<bib:address>New York</bib:address>
+	<bib:edition>2nd edition</bib:edition>
+      </bib:book>
+    </bib:entry>
+  </bib:file>
+  
+</document>

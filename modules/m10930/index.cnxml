@@ -1,0 +1,330 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+
+  <title>Computational Savings of Polyphase/DFT Filterbanks</title>
+  
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>3d5bb79e-5664-4e3f-90ab-210293baef6d</md:uuid>
+</metadata>
+
+
+  
+  <content>
+    <para id="p1">
+      This module will briefly take a look a the computational savings
+      of the polyphase/DFT modulated filterbank implementation.  We
+      will start by looking at our standard analysis bank and then
+      move on to compare this with our other implementation approaches.
+    </para>
+
+    <para id="p2">
+      Assume that the lowpass filter in the standard analysis bank, 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">H</m:ci>
+	  <m:ci>z</m:ci>
+	</m:apply>
+      </m:math>, 
+      has impulse response length <m:math><m:ci>N</m:ci></m:math>.  To
+      calculate the sub-band output vector 
+      <m:math>
+	<m:set>
+	    <m:bvar>
+              <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>y</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>m</m:ci>
+	    </m:apply>
+	    </m:bvar>
+	    <m:condition>
+	      <m:apply>
+		<m:eq/>
+		<m:ci>k</m:ci>
+		<m:set>
+		  <m:cn>0</m:cn>
+		  <m:ci>…</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:set>
+	      </m:apply>
+	    </m:condition>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>y</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>m</m:ci>
+	    </m:apply>
+	</m:set>
+      </m:math> using the standard structure, we have
+
+      <equation id="eq1">
+	<m:math>
+	  <m:mrow>
+	  <m:mi>M</m:mi>
+	  <m:mfrac>
+	    <m:mi>decimator outputs</m:mi>
+	    <m:mi>vector</m:mi>
+	  </m:mfrac>
+	  <m:mspace/>
+	  <m:mo>×</m:mo>
+	  <m:mspace/>
+	  <m:mi>M</m:mi>
+	  <m:mfrac>
+	    <m:mi>filter outputs</m:mi>
+	    <m:mi>decimator outputs</m:mi>
+	  </m:mfrac>
+	  <m:mspace/>
+	  <m:mo>×</m:mo>
+	  <m:mspace/>
+	  <m:mfenced>
+	    <m:mrow>
+	      <m:mi>N</m:mi>
+	      <m:mo>+</m:mo>
+	      <m:mn>1</m:mn>
+	    </m:mrow>
+	  </m:mfenced>
+	  <m:mfrac>
+	    <m:mi>multiplications</m:mi>
+	    <m:mi>filter output</m:mi>
+	  </m:mfrac>	  
+	  <m:mo>=</m:mo>
+	  <m:mrow>
+	    <m:msup>
+	      <m:mi>M</m:mi>
+	      <m:mn>2</m:mn>
+	    </m:msup>
+	    <m:mfenced>
+	      <m:mrow>
+		<m:mi>N</m:mi>
+		<m:mo>+</m:mo>
+		<m:mn>1</m:mn>
+	      </m:mrow>
+	    </m:mfenced>
+	  </m:mrow>
+	  <m:mfrac>
+	    <m:mi>multiplications</m:mi>
+	    <m:mi>vector</m:mi>
+	  </m:mfrac>
+	  </m:mrow>
+	</m:math>
+      </equation>
+      
+      where we have included one multiply for the modulator.  The
+      calculations above pertain to standard (<foreign>i.e.</foreign>,
+      not polyphase) decimation.  If we implement the
+      lowpass/downsampler in each filterbank branch with a polyphase
+      decimator,
+      
+      <equation id="eq2">
+	<m:math>
+	  <m:mrow>
+	  <m:mi>M</m:mi>
+	  <m:mfrac>
+	    <m:mi>branch outputs</m:mi>
+	    <m:mi>vector</m:mi>
+	  </m:mfrac>
+	  <m:mspace/>
+	  <m:mo>×</m:mo>
+	  <m:mspace/>
+	  <m:mfenced>
+	    <m:mrow>
+	      <m:mi>N</m:mi>
+	      <m:mo>+</m:mo>
+	      <m:mn>1</m:mn>
+	    </m:mrow>
+	  </m:mfenced>
+	  <m:mfrac>
+	    <m:mi>multiplications</m:mi>
+	    <m:mi>branch output</m:mi>
+	  </m:mfrac>	  
+	  <m:mo>=</m:mo>
+	  <m:mrow>	  	    
+	    <m:mi>M</m:mi>
+	    <m:mfenced>
+	      <m:mrow>
+		<m:mi>N</m:mi>
+		<m:mo>+</m:mo>
+		<m:mn>1</m:mn>
+	      </m:mrow>
+	    </m:mfenced>
+	  </m:mrow>
+	  <m:mfrac>
+	    <m:mi>multiplications</m:mi>
+	    <m:mi>vector</m:mi>
+	  </m:mfrac>
+	  </m:mrow>
+	</m:math>
+      </equation>
+
+      To calculate the same output vector for the polyphase/DFT
+      structure, we have approximately 
+      
+      <equation id="eq3">
+	<m:math>
+	  <m:mrow>
+	  <m:mn>1</m:mn>
+	  <m:mfrac>
+	    <m:mi>DFT</m:mi>
+	    <m:mi>vector</m:mi>
+	  </m:mfrac>
+	  <m:mspace/>
+	  <m:mo>×</m:mo>
+	  <m:mspace/>	
+	  <m:mfenced>
+	    <m:mrow>
+	      <m:mfrac>
+		<m:mi>M</m:mi>
+		<m:mn>2</m:mn>
+	      </m:mfrac>
+	      <m:msub>
+		<m:mi>log</m:mi>
+		<m:mn>2</m:mn>
+	      </m:msub>
+	      <m:mi>M</m:mi>
+	      <m:mfrac>
+		<m:mi>multiplications</m:mi>
+		<m:mi>DFT</m:mi>
+	      </m:mfrac>
+	      <m:mspace/>
+	      <m:mo>×</m:mo>
+	      <m:mspace/>	    
+	      <m:mi>M</m:mi>
+	      <m:mfrac>
+		<m:mi>polyphase outputs</m:mi>
+		<m:mi>DFT</m:mi>
+	      </m:mfrac>		    
+	      <m:mspace/>
+	      <m:mo>×</m:mo>
+	      <m:mspace/>
+	      <m:mfrac>
+		<m:mi>N</m:mi>
+		<m:mi>M</m:mi>
+	      </m:mfrac>
+	      <m:mfrac>
+		<m:mi>multiplications</m:mi>
+		<m:mi>polyphase output</m:mi>
+	      </m:mfrac>
+	    </m:mrow>
+	  </m:mfenced>
+	  </m:mrow>
+	</m:math>
+      </equation>
+
+      <m:math display="block">
+	<m:mrow>
+	<m:mo>=</m:mo>
+	<m:mspace/>
+	<m:mfenced>
+	  <m:mrow>	  	    
+	    <m:mi>N</m:mi>
+	    <m:mo>+</m:mo>
+	    <m:mrow>
+	      <m:mfrac>
+		<m:mi>M</m:mi>
+		<m:mn>2</m:mn>
+	      </m:mfrac>
+	      <m:msub>
+		<m:mi>log</m:mi>
+		<m:mn>2</m:mn>
+	      </m:msub>
+	      <m:mi>M</m:mi>
+	    </m:mrow>
+	  </m:mrow>
+	</m:mfenced>
+	<m:mfrac>
+	  <m:mi>multiplications</m:mi>
+	  <m:mi>vector</m:mi>
+	</m:mfrac>
+	</m:mrow>
+      </m:math>
+
+      The table below gives some typical numbers.  Recall that the
+      filter length <m:math><m:ci>N</m:ci></m:math> will be linearly
+      proportional to the decimation factor
+      <m:math><m:ci>M</m:ci></m:math>, so that the ratio 
+      <m:math>
+	<m:apply>
+	  <m:divide/>
+	  <m:ci>N</m:ci>
+	  <m:ci>M</m:ci>
+	</m:apply>
+      </m:math> determines the passband and stopband performance.
+    </para>
+
+    <table frame="all" id="table1" summary="">
+      <tgroup cols="3" align="center" colsep="1" rowsep="1">
+	<thead valign="top">
+	  <row>
+	    <entry align="center"/>
+	    <entry align="center">
+	      <m:math>
+		<m:apply>
+		  <m:eq/>
+		  <m:ci>M</m:ci>
+		  <m:cn>32</m:cn>
+		</m:apply>
+	      </m:math>, 
+	      <m:math>
+		<m:apply>
+		  <m:eq/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>N</m:ci>
+		    <m:ci>M</m:ci>
+		  </m:apply>
+		  <m:cn>10</m:cn>
+		</m:apply>
+	      </m:math>
+	     </entry>	
+	    <entry align="center">
+	      <m:math>
+		<m:apply>
+		  <m:eq/>
+		  <m:ci>M</m:ci>
+		  <m:cn>128</m:cn>
+		</m:apply>
+	      </m:math>, 
+	      <m:math>
+		<m:apply>
+		  <m:eq/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>N</m:ci>
+		    <m:ci>M</m:ci>
+		  </m:apply>
+		  <m:cn>10</m:cn>
+		</m:apply>
+	      </m:math>	      
+	    </entry>
+	  </row>
+	</thead>
+	<tbody valign="top">
+	  <row>
+	    <entry align="right">standard</entry>
+	    <entry align="center">328,704</entry>
+	    <entry align="center">20,987,904</entry>
+	  </row>
+	  <row>
+	    <entry align="right">standard with polyphase</entry>
+	    <entry align="center">10,272</entry>
+	    <entry align="center">163,968</entry>
+	  </row>
+	  <row>
+	    <entry align="right">polyphase/DFT</entry>
+	    <entry align="center">400</entry>
+	    <entry align="center">1,728</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+
+  </content>
+</document>

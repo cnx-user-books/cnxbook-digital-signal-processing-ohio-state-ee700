@@ -1,0 +1,296 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Uniform Filterbanks</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>61ae1f62-d815-4e60-922f-4c22bc473c0a</md:uuid>
+</metadata>
+
+
+
+  <content>
+    <section id="s1_sub2">
+      <title>Uniform Filterbanks</title>
+      <para id="p1_s1s2">
+	With <m:math><m:ci>M</m:ci></m:math> uniformly spaced
+	sub-bands, the sub-band width is 
+	<m:math>
+	  <m:apply>
+	    <m:divide/>
+	    <m:apply>
+	      <m:times/>
+	      <m:cn>2</m:cn>
+	      <m:pi/>
+	    </m:apply>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:math> radians, implying that the sub-band signal can be
+	downsampled by a factor <m:math><m:ci>M</m:ci></m:math> (but
+	not more than <m:math><m:ci>M</m:ci></m:math>) without loss
+	of information.  This is referred to as a "critically
+	sampled" filterbank.  This maximal level of downsampling is
+	advantageous when storing or further processing the sub-band
+	signals.  With critical sampling, the total number of
+	downsampled sub-band output samples equals the total number
+	of input samples.  Assuming lossless sub-band processing,
+	the critically-sampled synthesis/analysis procedure is
+	illustrated in <link target-id="fig5" strength="3"/>:
+      </para>
+      
+      <figure id="fig5">
+	<media id="idm5544656" alt=""><image src="../../media/wf_f5-5151.png" mime-type="image/png"/></media>
+      </figure>	
+
+      <para id="p2_s1s2">
+	Recall that one of our goals in filter design is to ensure
+	that 
+	<m:math>
+	  <m:apply>
+	    <m:approx/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">y</m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">x</m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>n</m:ci>
+		<m:ci>d</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math> for some integer delay
+	<m:math><m:ci>d</m:ci></m:math>.  From the <link target-id="fig5" strength="3">block diagram above</link>, one can see that
+	imperfect analysis filtering will contribute aliasing errors
+	to the sub-band signals.  This aliasing distortion will
+	degrade
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">y</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math> 
+	if it is not cancelled by the synthesis filterbank.  Though
+	ideal brick-wall filters 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> and 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>G</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> could easily provide perfect reconstruction
+	(<foreign>i.e.</foreign>,
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">y</m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">x</m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>n</m:ci>
+		<m:ci>d</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>), they would be unimplementable due to their
+	doubly-infinite impulse responses.  Thus, we are interested
+	in the design of causal FIR filters that give near-perfect
+	reconstruction or, if possible, perfect reconstruction.
+      </para>
+
+
+      <!--  OLD STUFF:
+
+      <figure id='fig2'>
+      <media type="image/png" src="filterbanks2.png"/>
+    </figure>
+      <para id='sec1para3'>
+      <list id='list1a'>
+      <item>
+      Uniform filterbank:
+      <m:math>
+      <m:apply>
+      <m:eq/>
+      <m:ci>
+      <m:msub>
+      <m:mi>&omega;</m:mi>
+      <m:mi>k</m:mi>
+    </m:msub>
+    </m:ci>
+      <m:apply>
+      <m:divide/>
+      <m:apply>
+      <m:times/>
+      <m:cn>2</m:cn>
+      <m:pi/>
+      <m:ci>k</m:ci>
+    </m:apply>
+      <m:ci>M</m:ci>
+    </m:apply>
+    </m:apply>
+    </m:math>,
+      <m:math>
+      <m:apply>
+      <m:eq/>
+      <m:ci>BW</m:ci>
+      <m:apply>
+      <m:divide/>
+      <m:apply>
+      <m:times/>
+      <m:cn>2</m:cn>
+      <m:pi/>
+    </m:apply>
+      <m:ci>M</m:ci>
+    </m:apply>
+    </m:apply>
+    </m:math>
+    </item>	    
+      <item>
+      Constant-Q filterbank: 
+      <m:math>
+      <m:apply>
+      <m:eq/>
+      <m:apply>
+      <m:divide/>
+      <m:apply>
+      <m:times/>
+      <m:ci>B</m:ci>
+      <m:ci>
+      <m:msub>
+      <m:mi>&omega;</m:mi>
+      <m:mi>k</m:mi>
+    </m:msub>
+    </m:ci>
+    </m:apply>
+      <m:ci>
+      <m:msub>
+      <m:mi>&omega;</m:mi>
+      <m:mi>k</m:mi>
+    </m:msub>
+    </m:ci>
+    </m:apply>
+      <m:ci>constant</m:ci>
+    </m:apply>
+    </m:math>.
+    </item>
+    </list>
+    </para>
+      <figure id='fig3d'>
+      <media type="image/png" src="filterbanks3.png"/>
+    </figure>
+      <para id='sec1para4'>
+      Because
+      <m:math>
+      <m:apply>
+      <m:ci type='fn' class='discrete'>
+      <m:msub>
+      <m:mi>V</m:mi>
+      <m:mi>k</m:mi>
+    </m:msub>
+    </m:ci>
+      <m:ci>n</m:ci>
+    </m:apply>
+    </m:math>
+      are bandlimited, it is typical to downsample the outputs.  If
+      we downsample an M-band filterbank by
+      <m:math><m:ci>M</m:ci></m:math>, the number of inputs equals
+      the total number of oral?/synth outputs per line.  This is
+      called "critically sampled".
+    </para>
+      <para id='sec1para5'>
+      Typically the subband processing is some form of lossy
+      compression.  Then as we compress less and less, we would
+      want to have
+      <m:math>
+      <m:apply>
+      <m:eq/>
+      <m:apply>
+      <m:ci type='fn' class='discrete'>y</m:ci>
+      <m:ci>n</m:ci>
+    </m:apply>
+      <m:apply>
+      <m:ci type='fn' class='discrete'>x</m:ci>
+      <m:apply>
+      <m:minus/>
+      <m:ci>n</m:ci>
+      <m:ci>
+      <m:msub>
+      <m:mi>n</m:mi>
+      <m:mn>0</m:mn>
+    </m:msub>
+    </m:ci>
+    </m:apply>
+    </m:apply>
+    </m:apply>
+    </m:math>.  This requires 
+    </para>
+      <figure id='fig4d'>
+      <media type="image/png" src="filterbanks4.png"/>
+    </figure>
+      <para id='sec1para6'>
+      which is a pure delay.  Can this be accomplished if 
+      <m:math>
+      <m:set>
+      <m:apply>
+      <m:ci type='fn'>
+      <m:msub>
+      <m:mi>H</m:mi>
+      <m:mi>k</m:mi>
+    </m:msub>
+    </m:ci>
+      <m:ci>z</m:ci>
+    </m:apply>
+      <m:apply>
+      <m:ci type='fn'>
+      <m:msub>
+      <m:mi>G</m:mi>
+      <m:mi>k</m:mi>
+    </m:msub>
+    </m:ci>
+      <m:ci>z</m:ci>
+    </m:apply>
+    </m:set>
+    </m:math> are non-ideal?  Yes, as we will see.
+    </para>
+      -->
+
+      <para id="sec2para1">
+	There are two principle approaches to the design of
+	filterbanks:
+	
+	<list id="list2" list-type="enumerated">
+	  <item>
+	    Classical: Approximate ideal brick wall filters to ensure
+	    good sub-band isolation (<foreign>i.e.</foreign>,
+	    frequency selectivity) and accept (a hopefully small
+	    amount of) aliasing and thus reconstruction error.
+	  </item>
+	  
+	  <item>
+	    Modern: Constrain the filters to give perfect (or
+	    near-perfect) reconstruction and hope for good sub-band
+	    isolation. 
+	  </item>
+	</list>
+      </para>
+    </section>
+  </content>
+  
+</document>

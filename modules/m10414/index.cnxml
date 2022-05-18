@@ -1,0 +1,1261 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  
+  <title>Bi-Orthogonal Perfect Reconstruction FIR Filterbanks</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>a88bf03f-d13d-4551-b03c-1975e31d4990</md:uuid>
+</metadata>
+
+  
+  <content>
+    <section id="sec1">
+      <title>Bi-Orthogonal Filter Banks</title>
+      <para id="p0">
+	Due to the minimum-phase spectral factorization, <link document="m10413" strength="3">orthogonal PR-FIR
+	filterbanks</link> will not have linear-phase analysis and
+	synthesis filters.  Non-linear phase may be undesirable for
+	certain applications.  "Bi-orthogonal" designs are closely
+	related to orthogonal designs, yet give linear-phase filters.
+	The analysis-filter design rules for the bi-orthogonal case
+	are
+	
+	<list id="list1">
+	  <item>
+	    <m:math>
+	      <m:apply>
+		<m:ci type="fn">F</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	    </m:math>  :  zero-phase real-coefficient halfband such
+	    that 
+	    <m:math>
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn">F</m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>n</m:ci>
+		  </m:bvar>
+		  <m:lowlimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>N</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:apply>
+		  </m:lowlimit>
+		  <m:uplimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>N</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">f</m:ci>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:power/>
+		      <m:ci>z</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply> 
+		</m:apply>
+	      </m:apply>
+	    </m:math>, where <m:math><m:ci>N</m:ci></m:math> is even.
+	  </item>
+
+	  <item>
+	    <m:math>
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>N</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">F</m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:math>
+	  </item>
+	</list>
+
+	It is straightforward to verify that these design choices
+	satisfy the FIR perfect reconstruction condition 
+	
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:determinant/>
+	      <m:apply>
+		<m:ci type="matrix">H</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:ci>c</m:ci>
+	      <m:apply>
+		<m:power/>
+		<m:ci>z</m:ci>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>l</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math> with 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>c</m:ci>
+	    <m:cn>1</m:cn>
+	  </m:apply>
+	</m:math> and 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>l</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci>N</m:ci>
+	      <m:cn>1</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math>:
+
+	
+	<equation id="eq1">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:determinant/>
+		<m:apply>
+		  <m:ci type="matrix">H</m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>z</m:ci> 
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+                    <m:apply>
+                      <m:minus/>
+		      <m:ci>z</m:ci>
+                    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>z</m:ci> 
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	  
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+                    <m:apply>
+                      <m:minus/>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>N</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+                    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">F</m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:power/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		    <m:apply>
+                      <m:minus/>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>N</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+                    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+                    <m:apply>
+                      <m:minus/>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>N</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+                    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">F</m:ci>
+                    <m:apply>
+		      <m:minus/>
+		      <m:ci>z</m:ci>
+                    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>z</m:ci>
+                  <m:apply>
+                    <m:minus/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>N</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+                  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:plus/>
+		  <m:apply>
+		    <m:ci type="fn">F</m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">F</m:ci>
+		    <m:apply>
+                      <m:minus/>
+		      <m:ci>z</m:ci>
+                    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:power/>
+		<m:ci>z</m:ci>
+		<m:apply>
+		  <m:minus/>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>N</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	Furthermore, note that 
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>z</m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>N</m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn">F</m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math> is causal with real coefficients, so that both 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> and 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>1</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> can be made causal with real coefficients.  (This
+	was another PR-FIR requirement.)  The choice 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>c</m:ci>
+	    <m:cn>1</m:cn>
+	  </m:apply>
+	</m:math> implies that the synthesis filters should obey 
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>G</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:cn>2</m:cn>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>H</m:mi>
+		    <m:mn>1</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+                  <m:minus/>
+		  <m:ci>z</m:ci>
+                </m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>G</m:mi>
+		  <m:mn>1</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:cn>-2</m:cn>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>H</m:mi>
+		    <m:mn>0</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+                  <m:minus/>
+		  <m:ci>z</m:ci>
+                </m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	From the design choices above, we can see that bi-orthogonal
+	analysis filter design reduces to the factorization of a
+	causal halfband filter 
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>z</m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>N</m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn">F</m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math> 
+	into  
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> and 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mn>1</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> that have <emphasis>both</emphasis> real
+	coefficients and linear-phase.  Earlier we saw that
+	linear-phase corresponds to root symmetry across the unit
+	circle in the complex plane, and that real-coefficients
+	correspond to complex-conjugate root symmetry.  Simultaneous
+	satisfaction of these two properties can be accomplished by
+	<emphasis>quadruples</emphasis> of roots.  However, there are
+	special cases in which a root pair, or even a single root, can
+	simultaneously satisfy these properties.  Examples are
+	illustrated in <link target-id="fig1" strength="3"/>:
+      </para>
+
+      
+      <figure id="fig1">
+	<media id="idp8091264" alt=""><image src="../../media/biorth.png" mime-type="image/png"/></media>
+      </figure>
+
+      <para id="para2">
+	The design procedure for the analysis filters of a
+	bi-orthogonal perfect-reconstruction FIR filterbank is
+	summarized below:
+
+	<list id="list2" list-type="enumerated">
+	  <item>
+	    Design a zero-phase real-coefficient filter 
+	    <m:math>
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn">F</m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>n</m:ci>
+		  </m:bvar>
+		  <m:lowlimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>N</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:apply>
+		  </m:lowlimit>
+		  <m:uplimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>N</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">f</m:ci>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:power/>
+		      <m:ci>z</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply> 
+		</m:apply>
+	      </m:apply>
+	    </m:math> where N is a positive even integer (via,
+	    <foreign>e.g.</foreign>, window designs, LS, or
+	    equiripple).
+	  </item>
+	  
+	  <item>
+	    Compute the roots of 
+	     <m:math>
+	      <m:apply>
+		<m:ci type="fn">F</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	    </m:math> and partition into a set of root groups
+	    
+	    <m:math>
+	      <m:apply>
+		<m:set>
+		  <m:ci><m:msub>
+		    <m:mi>G</m:mi>
+		    <m:mn>0</m:mn>
+		  </m:msub></m:ci>
+		  <m:ci><m:msub>
+		    <m:mi>G</m:mi>
+		    <m:mn>1</m:mn>
+		  </m:msub></m:ci>
+		  <m:ci><m:msub>
+		    <m:mi>G</m:mi>
+		    <m:mn>2</m:mn>
+		  </m:msub></m:ci>
+		  <m:ci>…</m:ci>
+		</m:set>
+	      </m:apply>
+	    </m:math> 
+	    that have <emphasis>both</emphasis> complex-conjugate and
+	    unit-circle symmetries.  Thus a root group may have one of
+	    the following forms:
+
+	    <m:math display="block">
+	      <m:apply>
+		<m:eq/>
+		<m:ci><m:msub>
+		  <m:mi>G</m:mi>
+		  <m:mi>i</m:mi>
+		</m:msub></m:ci>
+		<m:apply>
+		  <m:set>
+		    <m:ci><m:msub>
+		      <m:mi>a</m:mi>
+		      <m:mi>i</m:mi>
+		    </m:msub></m:ci>
+		    <m:apply>
+		      <m:conjugate/>
+		      <m:ci><m:msub>
+			<m:mi>a</m:mi>
+			<m:mi>i</m:mi>
+		      </m:msub></m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:divide/>
+		      <m:cn>1</m:cn>
+		      <m:ci><m:msub>
+			<m:mi>a</m:mi>
+			<m:mi>i</m:mi>
+		      </m:msub></m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:divide/>
+		      <m:cn>1</m:cn>
+		      <m:apply>
+			<m:conjugate/>
+			<m:ci><m:msub>
+			  <m:mi>a</m:mi>
+			  <m:mi>i</m:mi>
+			</m:msub></m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:set>
+		</m:apply>
+	      </m:apply>
+	    </m:math>
+	    
+	    <m:math display="block">
+	      <m:apply>
+		<m:forall/>
+		<m:bvar>
+		  <m:ci><m:msub>
+		    <m:mi>a</m:mi>
+		    <m:mi>i</m:mi>
+		  </m:msub></m:ci>
+		</m:bvar>
+		<m:condition>
+		  <m:apply>
+		    <m:eq/>
+		    <m:apply>
+		      <m:abs/>
+		      <m:ci><m:msub>
+			<m:mi>a</m:mi>
+			<m:mi>i</m:mi>
+		      </m:msub></m:ci>
+		    </m:apply>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:condition>
+		<m:apply>
+		  <m:eq/>
+		  <m:ci><m:msub>
+		    <m:mi>G</m:mi>
+		    <m:mi>i</m:mi>
+		  </m:msub></m:ci>
+		  <m:apply>
+		    <m:set>
+		      <m:ci><m:msub>
+			<m:mi>a</m:mi>
+			<m:mi>i</m:mi>
+		      </m:msub></m:ci>
+		      <m:apply>
+			<m:conjugate/>
+			<m:ci><m:msub>
+			  <m:mi>a</m:mi>
+			  <m:mi>i</m:mi>
+			</m:msub></m:ci>
+		      </m:apply>
+		    </m:set>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:math>
+
+	    <m:math display="block">
+	      <m:apply>
+		<m:forall/>
+		<m:bvar>
+		  <m:ci><m:msub>
+		    <m:mi>a</m:mi>
+		    <m:mi>i</m:mi>
+		  </m:msub></m:ci>
+		</m:bvar>
+		<m:condition>
+		  <m:apply>
+		    <m:in/>
+		    <m:ci><m:msub>
+		      <m:mi>a</m:mi>
+		      <m:mi>i</m:mi>
+		    </m:msub></m:ci>
+		    <m:reals/>
+		  </m:apply>
+		</m:condition>
+		<m:apply>
+		  <m:eq/>
+		  <m:ci><m:msub>
+		    <m:mi>G</m:mi>
+		    <m:mi>i</m:mi>
+		  </m:msub></m:ci>
+		  <m:apply>
+		    <m:set>
+		      <m:ci><m:msub>
+			<m:mi>a</m:mi>
+			<m:mi>i</m:mi>
+		      </m:msub></m:ci>	    
+		      <m:apply>
+			<m:divide/>
+			<m:cn>1</m:cn>
+			<m:ci><m:msub>
+			  <m:mi>a</m:mi>
+			  <m:mi>i</m:mi>
+			</m:msub></m:ci>
+		      </m:apply>
+		    </m:set>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:math>
+
+
+	    <m:math display="block">
+	      <m:apply>
+		<m:forall/>
+		<m:bvar>
+		  <m:ci><m:msub>
+		    <m:mi>a</m:mi>
+		    <m:mi>i</m:mi>
+		  </m:msub></m:ci>
+		</m:bvar>
+		<m:condition>
+		  <m:apply>
+		    <m:eq/>
+		    <m:ci><m:msub>
+		      <m:mi>a</m:mi>
+		      <m:mi>i</m:mi>
+		    </m:msub></m:ci>
+		    <m:apply>
+		      <m:ci><m:mo>±</m:mo></m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:apply>
+		</m:condition>
+		<m:apply>
+		  <m:eq/>
+		  <m:ci><m:msub>
+		    <m:mi>G</m:mi>
+		    <m:mi>i</m:mi>
+		  </m:msub></m:ci>
+		  <m:apply>
+		    <m:set>
+		      <m:ci><m:msub>
+			<m:mi>a</m:mi>
+			<m:mi>i</m:mi>
+		      </m:msub></m:ci>	
+		    </m:set>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:math>
+
+	    Choose 
+	    <footnote id="idp8852752">
+	      Note that
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn"> 
+		    <m:msub>
+		      <m:mover accent="true">
+			<m:mi>H</m:mi>
+			<m:mo>^</m:mo>
+		      </m:mover>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:math> and 
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn"> 
+		    <m:msub>
+		      <m:mover accent="true">
+			<m:mi>H</m:mi>
+			<m:mo>^</m:mo>
+		      </m:mover>
+		      <m:mn>1</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:math> will be real-coefficient linear-phase
+	      regardless of which groups are allocated to which
+	      filter.  Their frequency selectivity, however, will be
+	      strongly influenced by group allocation.  Thus, you many
+	      need to experiment with different allocations to find
+	      the best highpass/lowpass combination.  Note also that
+	      the length of 
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:math>
+	      may differ from the length of 
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:math>.
+	    </footnote> 
+
+	    a subset of root groups and construct 
+	    <m:math>
+	      <m:apply>
+		<m:ci type="fn"> 
+		  <m:msub>
+		    <m:mover accent="true">
+		      <m:mi>H</m:mi>
+		      <m:mo>^</m:mo>
+		    </m:mover>
+		    <m:mn>0</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	    </m:math> 
+	    from those roots.  Then construct 
+	    <m:math>
+	      <m:apply>
+		<m:ci type="fn"> 
+		  <m:msub>
+		    <m:mover accent="true">
+		      <m:mi>H</m:mi>
+		      <m:mo>^</m:mo>
+		    </m:mover>
+		    <m:mn>1</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:math> 
+	    from the roots in the remaining root groups.  Finally,
+	    construct 
+	    <m:math>
+	      <m:apply>
+		<m:ci type="fn"> 
+		  <m:msub>
+		    <m:mover accent="true">
+		      <m:mi>H</m:mi>
+		      <m:mo>^</m:mo>
+		    </m:mover>
+		    <m:mn>1</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	    </m:math> 
+	    from 
+	    <m:math>
+	      <m:apply>
+		<m:ci type="fn"> 
+		  <m:msub>
+		    <m:mover accent="true">
+		      <m:mi>H</m:mi>
+		      <m:mo>^</m:mo>
+		    </m:mover>
+		    <m:mn>1</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:math> 
+	    by reversing the signs of odd-indexed coefficients.
+	  </item>
+
+	  <item>
+	    <m:math>
+	      <m:apply>
+		<m:ci type="fn"> 
+		  <m:msub>
+		    <m:mover accent="true">
+		      <m:mi>H</m:mi>
+		      <m:mo>^</m:mo>
+		    </m:mover>
+		    <m:mn>0</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	    </m:math> and 
+	    <m:math>
+	      <m:apply>
+		<m:ci type="fn"> 
+		  <m:msub>
+		    <m:mover accent="true">
+		      <m:mi>H</m:mi>
+		      <m:mo>^</m:mo>
+		    </m:mover>
+		    <m:mn>1</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	    </m:math> are the desired analysis filters up to a
+	    scaling.  To take care of the scaling, first create 
+	    
+	    <m:math>
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn"> 
+		    <m:msub>
+		      <m:mover accent="true">
+			<m:mi>H</m:mi>
+			<m:mo>~</m:mo>
+		      </m:mover>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:times/>		
+		  <m:ci>a</m:ci>
+		  <m:apply>
+		    <m:ci type="fn"> 
+		      <m:msub>
+			<m:mover accent="true">
+			  <m:mi>H</m:mi>
+			  <m:mo>^</m:mo>
+			</m:mover>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:math>
+
+	    and 
+
+	    <m:math>
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn"> 
+		    <m:msub>
+		      <m:mover accent="true">
+			<m:mi>H</m:mi>
+			<m:mo>~</m:mo>
+		      </m:mover>
+		      <m:mn>1</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:times/>		
+		  <m:ci>b</m:ci>
+		  <m:apply>
+		    <m:ci type="fn"> 
+		      <m:msub>
+			<m:mover accent="true">
+			  <m:mi>H</m:mi>
+			  <m:mo>^</m:mo>
+			</m:mover>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:math>
+
+	    where <m:math><m:ci>a</m:ci></m:math> and
+	    <m:math><m:ci>b</m:ci></m:math> are selected so that 
+	    
+	    <m:math>
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:sum/>
+		  <m:domainofapplication>
+		    <m:ci>n</m:ci>
+		  </m:domainofapplication>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"> 
+		      <m:msub>
+			<m:mover accent="true">
+			  <m:mi>h</m:mi>
+			  <m:mo>~</m:mo>
+			</m:mover>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:cn>1</m:cn>
+		<m:apply>
+		  <m:sum/>
+		  <m:domainofapplication>
+		    <m:ci>n</m:ci>
+		  </m:domainofapplication>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"> 
+		      <m:msub>
+			<m:mover accent="true">
+			  <m:mi>h</m:mi>
+			  <m:mo>~</m:mo>
+			</m:mover>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:math>.  Then create 
+
+	    <m:math>
+	      <m:apply>
+		<m:eq/>
+		 <m:apply>
+		  <m:ci type="fn"> 
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:mi>c</m:mi>
+		  <m:apply>
+		    <m:ci type="fn"> 
+		      <m:msub>
+			<m:mover accent="true">
+			  <m:mi>H</m:mi>
+			  <m:mo>~</m:mo>
+			</m:mover>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply> 
+	    </m:math>  and 
+
+	     <m:math>
+	      <m:apply>
+		<m:eq/>
+		 <m:apply>
+		  <m:ci type="fn"> 
+		    <m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>1</m:mn>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:mi>c</m:mi>
+		  <m:apply>
+		    <m:ci type="fn"> 
+		      <m:msub>
+			<m:mover accent="true">
+			  <m:mi>H</m:mi>
+			  <m:mo>~</m:mo>
+			</m:mover>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply> 
+	    </m:math> 
+
+	    where <m:math><m:ci>c</m:ci></m:math> is selected so that
+	    the property 
+	    
+	    <m:math display="block">
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>N</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		
+		    <m:apply>
+		      <m:ci type="fn">F</m:ci>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:minus/>			     
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:math>
+	    
+	    is satisfied at DC (<foreign>i.e.</foreign>, 
+	    <m:math>
+	      <m:apply>
+		<m:eq/>
+		<m:ci>z</m:ci>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:imaginaryi/>
+		    <m:cn>0</m:cn>
+		  </m:apply>
+		</m:apply>
+		<m:cn>1</m:cn>
+	      </m:apply>
+	    </m:math>).  In other words, find
+	    <m:math><m:ci>c</m:ci></m:math> so that 
+
+	    
+	    <m:math>
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:sum/>
+		    <m:domainofapplication>
+		      <m:ci>n</m:ci>
+		    </m:domainofapplication>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete"> 
+			<m:msub>
+			  <m:mi>h</m:mi>
+			  <m:mn>0</m:mn>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:domainofapplication>
+		      <m:ci>m</m:ci>
+		    </m:domainofapplication>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:ci type="fn" class="discrete"> 
+			  <m:msub>
+			    <m:mi>h</m:mi>
+			    <m:mn>1</m:mn>
+			  </m:msub>
+			</m:ci>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		      <m:apply>
+			<m:power/>
+                        <m:apply>
+                        <m:minus/>
+			<m:cn>1</m:cn>
+                        </m:apply>
+			<m:ci>m</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:cn>1</m:cn>
+	      </m:apply>
+	    </m:math>.
+	  </item>
+	</list>
+
+      </para>
+    </section>
+  </content>  
+</document>
